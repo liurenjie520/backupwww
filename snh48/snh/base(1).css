@@ -1,0 +1,78 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+body {
+	font-family: "Microsoft YaHei", arial;
+	margin: 0px;
+	color: #313232;
+}
+img {
+	border: 0px;
+}
+a {
+	text-decoration: none
+}
+ul, li, ol, ul {
+	list-style: none;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, input, button, textarea, select, p {
+	margin: 0;
+	padding: 0;
+}
+.clear:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+.clear {
+	height: 1%;
+}
+/*首页，第六届前48获奖人员*/
+.zx6_sm {
+	width: 1270px;
+	overflow:hidden;
+	background: url(../images/temp/zx8_index_hb_bg.png);
+	position: relative;
+	float: left;
+}
+.zx6_sm .ev_leftPic {
+	float: left;
+	margin:20px 0 0 5px;
+}
+.zx6_sm .ev_1024Top48Pic {
+	float: left;
+	margin-right:5px;
+	margin-top:-15px;
+	display: none;
+}
+.zx6_sm .word {
+	float: left;
+	margin: 0 0 0 0px;
+	background: url(../images/temp/zx6_logo_bg.png) right -140px no-repeat;
+	color: #000;
+	width: 940px;
+	font-size: 16px;
+	line-height: 24px;
+	padding:10px 0;
+	text-indent:2em;
+}
+.zx6_sm .pic {
+	float: left;
+	margin: 0 0 10px 0;
+	width: 955px;
+}
+.zx6_sm .pic a {
+	float: left;
+	margin: 0 3px 3px 0;
+}
+
+.zx6_sm .index_pic a img {
+	width:50px;
+}
+.zx6_sm .index_pic a .first{width:103px;}
+.zx6_sm .index_pic a .second{width:77px;}
+.zx6_sm .pink_f{ color:#f25ca0; font-weight: 600;}

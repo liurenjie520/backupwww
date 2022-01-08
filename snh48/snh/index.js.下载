@@ -1,0 +1,2577 @@
+!window.layer && document.write("<script src=\"js/layer/layer.js\">"+"</scr"+"ipt>");
+
+//载入导航栏页面
+$("#include_nav").load("nav_map.html",function(responseTxt,statusTxt,xhr){
+    if(statusTxt=="success"){
+		nav_op();
+		drop_get();
+	}
+  });
+
+//载入底部信息页面
+$("#include_footer").load("footer.html",function(responseTxt,statusTxt,xhr){
+    if(statusTxt=="success"){
+		var cgroup1= (CGroup[$("#drop_g .curr").find(".g_name").attr("data-g")]);
+		//console.log(cgroup1);	
+		//ctl.chg_beian(cgroup1);
+		
+		//ctl.chg_pocket_info(cgroup1);//口袋信息
+		//document.write("<script src=\"js/ix_nav_map.js\">"+"</scr"+"ipt>");
+	}
+  });
+
+
+//判断ie浏览器
+function IEVersion() {
+	var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+	var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+	var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+	var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+	if(isIE) {
+		var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+		reIE.test(userAgent);
+		var fIEVersion = parseFloat(RegExp["$1"]);
+		if(fIEVersion == 7) {
+			return 7;
+		} else if(fIEVersion == 8) {
+			return 8;
+		} else if(fIEVersion == 9) {
+			return 9;
+		} else if(fIEVersion == 10) {
+			return 10;
+		} else {
+			return 6;//IE版本<=7
+		}   
+	} else if(isEdge) {
+		return 'edge';//edge
+	} else if(isIE11) {
+		return 11; //IE11  
+	}else{
+		return -1;//不是ie浏览器
+	}
+}
+
+
+
+var bannerColor=[];//["#020307","#54aed1","#cecff8"];//首页banner背景色切换
+var swiperBanner = new Swiper ('#banner', {
+	slidesPerView: "1",
+	loop: true,
+	lazy: {
+		loadPrevNext: true,
+	},
+	pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	on:{
+		slideChange: function(){
+			/*var curri=this.activeIndex-1;
+			//loop无限循环的关系，Swiper会多加两帧作为循环填充，其为第一桢大于数量，第二桢0
+			if(this.activeIndex>bannerColor.length) {
+				curri=0;
+			}else if(this.activeIndex==0){
+				curri=bannerColor.length-1;
+			}
+			$(".ix_banner").css({backgroundColor:bannerColor[curri]});*/
+			$(".ix_banner").css({backgroundColor:bannerColor[this.realIndex]});
+		},
+		slideChangeTransitionEnd: function(){
+		  	if(!this.slides.eq(this.activeIndex).find("img").attr("src")){
+				var t_src = this.slides.eq(this.activeIndex).find("img").attr("data-src");
+				this.slides.eq(this.activeIndex).find("img").attr("src",t_src);
+			}
+		}
+	}
+});
+
+var swiperNews = new Swiper ('#news_ban', {
+	slidesPerView: "1",
+	loop: true,
+	pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	},
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	}
+});
+
+//总选广告位
+var swiperVote = new Swiper ('#vote_ban', {
+	slidesPerView: "1",
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	},
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	}
+});
+
+var ix_event_box = new Swiper('.ix_event_box', {
+	direction: 'vertical',
+	slidesPerView: 'auto',
+	freeMode: true,
+	scrollbar: {
+		el: '.swiper-scrollbar',
+	},
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	mousewheel: true
+});
+
+/*var ix_song_box = new Swiper('.s_con', {
+	direction: 'vertical',
+	slidesPerView: 'auto',
+	freeMode: true,
+	scrollbar: {
+		el: '.swiper-scrollbar',
+	},
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	mousewheel: true
+});*/
+
+
+var m_his = new Swiper ('#m_his', {
+	slidesPerView: "auto",
+	scrollbar: {
+		el: '.swiper-scrollbar',
+	},
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	mousewheel: true
+});
+
+var left_memSwiper = new Swiper ('#mem_team_nav', {
+	slidesPerView: "auto",
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	noSwiping : true,
+	noSwipingClass : 'stop-swiping'
+});
+
+var ix_song_box =new Swiper('#songlist', {
+	direction: 'vertical',
+	slidesPerView: 'auto',
+	freeMode: true,
+	scrollbar: {
+		el: '.swiper-scrollbar',
+	},
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	mousewheel: true
+});
+new Swiper ('#mem_team_nav', {
+	slidesPerView: "auto",
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	watchOverflow: true,//如果仅有1个slide，swiper无效
+	noSwiping : true,
+	noSwipingClass : 'stop-swiping'
+});
+
+
+
+
+var goods_slide = new Swiper ('#goods_p', {
+	slidesPerView: "1",
+	loop: false,
+	pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	on:{
+		slideChange: function(){
+			var ctl=ix_control();
+			ctl.chg_goods_info($(".ix_goods_menu .active").index(),this.activeIndex);
+			//dosomething
+		}
+	}
+});
+var ix_disc_box = new Swiper ('#disc', {
+	slidesPerView: "auto",
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	watchOverflow: true,//因为仅有1个slide，swiper无效
+	mousewheel: true
+});
+
+var theater_pho = new Swiper ('#theater_pho', {
+	slidesPerView: "2",
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	mousewheel: true
+});
+
+
+
+var tabsSwiper = new Swiper('#mvp', {
+	speed: 500,
+	effect: 'flip',
+	grabCursor: true,
+	on: {
+		slideChange: function() {
+			$(".mvp_box .tabs .active").removeClass('active');
+			$(".mvp_box .tabs a").eq(this.activeIndex).addClass('active');
+		}
+	},
+	noSwiping : true,
+	noSwipingClass : 'stop-swiping'
+})
+$(".mvp_box .tabs a").on('click', function(e) {
+	e.preventDefault()
+	$(".mvp_box .tabs .active").removeClass('active')
+	$(this).addClass('active')
+	tabsSwiper.slideTo($(this).index())
+})
+
+var mvpsnhSwiper= new Swiper ('#mvp_snh', {
+	slidesPerView: "auto",
+	//virtual: true,//开启虚拟Slide功能,当你的Slide很多的时候，性能会有很大的提升
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	mousewheel: true
+});
+
+var mvpbejSwiper= new Swiper ('#mvp_bej', {
+	slidesPerView: "auto",
+	//virtual: true,//开启虚拟Slide功能,当你的Slide很多的时候，性能会有很大的提升
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	mousewheel: true
+});
+//console.log(ix_vote_snh.url);
+var mvpgnzSwiper= new Swiper ('#mvp_gnz', {
+	slidesPerView: "auto",
+	//virtual: true,//开启虚拟Slide功能,当你的Slide很多的时候，性能会有很大的提升
+	autoplay: {
+		delay: 5000,
+		disableOnInteraction: false,
+	},
+	navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	},
+	mousewheel: true
+});
+
+var wx_tabsSwiper = new Swiper ('#wx_tab', {
+	slidesPerView: "1",
+	direction: 'vertical',
+	on: {
+		slideChange: function() {
+			$(".wx_nav .wx_menu .active").removeClass('active');
+			$(".wx_nav .wx_menu .item").eq(this.activeIndex).addClass('active');
+		}
+	},
+	mousewheel: true
+});
+
+//页面启动先关闭自动切换栏目功能。待滚动条可视窗体加载
+var arr_auto_p=[swiperBanner,swiperNews,swiperVote,m_his,goods_slide,ix_disc_box,theater_pho,mvpsnhSwiper,mvpbejSwiper,mvpgnzSwiper];
+for(var i=0;i<arr_auto_p.length;i++){
+	arr_auto_p[i].autoplay.stop();
+}
+
+//手机二维码切换导航
+
+
+//所有下拉框滑动效果------------已经移到ix_nav_map.js
+/*var toggleStyleSelect=function(Jobj){
+	Jobj.toggleClass('hover');
+};
+$(".drop .item:gt(0)").hover(function(){
+	toggleStyleSelect($(this));
+});*/
+
+$(".drop:not(#drop_wb) .item").click(function(){
+	console.log("新增加载数据");
+	var datag = $(this).find(".g_name[data-g]").attr("data-g");
+	if(datag){
+		loadData(datag);
+	}
+});
+
+var ctl = ix_control();
+//ctl.chg_goods(0);
+//首页商品分类选择
+$(".ix_goods_menu li:not(:last)").mouseover(function(){
+	if($(this).index()==$(".ix_goods_menu .active").index()) return false;
+	$(".ix_goods_menu .active").removeClass("active");
+	$(this).addClass("active");
+	
+	ctl.chg_goods($(this).index());
+});
+
+//成员版块 导航切换
+$("#mem_g .group").mouseover(function(){
+	$("#mem_g li.active").removeClass("active");
+	$(this).addClass("active");
+	var index = $("#mem_g .group").index($(this));
+	var ctl = ix_control();
+	ctl.chg_lmem(index+1)
+});
+$("#mem_g .team").mouseover(function(){
+	$("#mem_g li.active").removeClass("active");
+	$(this).addClass("active");
+	var tid = parseInt($(this).attr("data-id"));
+	var ctl = ix_control();
+	ctl.chg_lmem(tid)
+});
+$("#drop_member .item:gt(0)").click(function(){
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_memNav();
+	ctl.chg_lmem(0);
+});
+//过滤多余的字数用省略号
+var wordlimit=function(){
+	$(".say_con").each(function(){
+		if ($(this).text().length > 58) {
+			$(this).html($(this).text().replace(/\s+/g, "").substr(0, 58) + "...")
+		}
+	});
+	$(".topic .t_con .txt").each(function(){
+		if ($(this).text().length > 38) {
+			$(this).html($(this).text().replace(/\s+/g, "").substr(0, 38) + "...")
+		}
+	});
+}
+wordlimit();
+var fansdMarquee="";
+//粉丝照片滚动
+fansdMarquee = $(".ix_fans").kxbdMarquee({direction:"up",isEqual:true,scrollDelay:50});
+
+//首页所有需要刷新的下拉-----------已经移到ix_nav_map.js
+/*$(".drop:not(#drop_wb) .item").click(function(){
+	var datag = $(this).find(".g_name[data-g]").attr("data-g");
+	if(datag){
+		$(this).parent().find(".curr").removeClass("curr");
+		$(this).addClass("curr");
+		$(this).parent().find(".def .g_name").text($(this).find(".g_name").text())
+		try{
+			$(this).parent().find(".def .tag").attr("class",$(this).find(".tag").attr("class"))
+		}catch(e){}
+	}
+});*/
+
+//主下拉切换分团-----------已经移到ix_nav_map.js
+/*$("#drop_g .item:gt(0)").click(function(){
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_skin();
+	ctl.chg_drop();
+	ctl.chg_address();
+	ctl.chg_song();
+});*/
+//$("#drop_g .item:eq(1)").click();//加载默认数据中。。。。。。。。。。。。。。。。
+
+//票务切换
+$("#drop_t .item:gt(0)").click(function(){
+	
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_drop_ticket();
+});
+
+//歌单切换
+$("#drop_song .item:gt(0)").click(function(){
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_song();
+});
+
+//新闻切换
+$("#drop_news .item:gt(0)").click(function(){
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_drop_news();
+	ctl.chg_gg_news();//新闻广告
+});
+/*$("#drop_news .item:gt(0)").click(function(){
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_drop_news();
+});*/
+
+//读取mp3音乐播放列表xml文件
+/*var xmlDom=parseXml("js/playlist.xml");//公共js方法
+var root=xmlDom.documentElement;
+var json_obj = $.xml2json(xmlDom);*/
+
+//json_obj.trackList.track[0].mp3
+
+var custom1;//歌单滚动条
+//音频播放器
+var myPlaylist = new jPlayerPlaylist({
+	jPlayer: "#jquery_jplayer_N",
+	cssSelectorAncestor: "#jp_container_N"
+}, 
+'', //mp3数据
+{
+	play: function () {
+		var top =$(".jp-playlist-current").index()*$(".jp-playlist-current").innerHeight()+1;
+		custom1.setScroll(top);
+	},
+	playlistOptions: {
+		enableRemoveControls: false,//是否增加删除按钮
+		addTime:0,
+		displayTime:0
+	},
+	swfPath: "js",
+	supplied: "mp3",
+	smoothPlayBar: true,//平滑过渡播放条
+	useStateClassSkin: false,//控制是否使用封面图
+	wmode: "window"
+});
+setTimeout(function(){
+	custom1 = new scrollbot("#jp-playlist",4).setStyle({
+		"box-shadow": "-2px 2px 4px rgba(153,153,153,.5)"
+	},{
+		"background":"rgba(0,0,0,.1)"
+	});//音乐列表滚动条美化
+},500);
+
+//视频分组切换
+$("#drop_video .item:gt(0)").click(function(){
+
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_vcate();
+	ctl.chg_drop_video();
+	
+});
+
+
+
+//星梦剧院分团下拉切换
+$("#drop_theater .item:gt(0)").click(function(){
+	var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+	ctl.chg_address();
+	ctl.chg_theater();
+	//ctl.chg_beian();
+
+});
+//$("#drop_theater .curr").click();
+
+//百度地图展示
+try{
+	var mp = new BMap.Map("g_map");
+	var point = new BMap.Point(121.497021,31.262461);//上海星梦剧院坐标
+	var point2 = new BMap.Point(116.524827,39.91927);//北京星梦剧院坐标
+	var point3 = new BMap.Point(113.329417,23.15554);//广州星梦剧院坐标
+	mp.centerAndZoom(point, 18);
+
+	var marker = new BMap.Marker(point);  // 创建标注
+	marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+	var opts = {
+	  position : point,    // 指定文本标注所在的地理位置
+	  offset   : new BMap.Size(-65, -50)    //设置文本偏移量
+	}
+	var label = new BMap.Label("SNH48星梦剧院", opts);  // 创建文本标注对象
+	label.setStyle({
+		 color : "000000",
+		 fontSize : "14px",
+		 height : "40px",
+		 width : "140px",
+		 lineHeight : "40px",
+		 fontFamily:"微软雅黑",
+		 border:"none",
+		 textAlign:"center",
+		 boxShadow:"2px 2px 4px rgba(0,0,0,.3)"
+	 });
+	marker.setLabel(label);  
+	mp.addOverlay(marker);
+}catch(ee){}
+
+
+//每日成员风采，浮动层事件
+$(".ix_day_star .close").click(function(){
+	$(".ix_day_star .ds_o").animate({left:"0px",opacity:"0"},500);
+	$(".ix_day_star .ds_h").animate({left:"-48px",opacity:"1"},500);
+});
+$(".ix_day_star .ds_h").click(function(){
+	$(".ix_day_star .ds_o").animate({left:"-275px",opacity:"1"},500);
+	$(".ix_day_star .ds_h").animate({left:"0",opacity:"0"},500);
+});
+
+var lmemMarquee;
+function ix_control(cgroup){
+	var groupCss=["snh_box","bej_box","gnz_box","snh_group_box"]
+	var ctl = new Object();
+	
+	//换肤
+	ctl.chg_skin = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			$("body").attr("class",groupCss[0]);
+			$('.s_banner').empty();
+			$('.s_banner').append('<iframe src="images/sbanner/snh.html" width="100%" height="100%" frameborder="0"></iframe>');
+			/*if(IEVersion() == -1){
+				$('.s_banner').empty();
+				$('.s_banner').append('<iframe src="images/sbanner/snh.html" width="100%" height="100%" frameborder="0"></iframe>');
+			}else{
+				$('.s_banner').css('background-image', 'url(images/index/gif-snh.gif)');
+			}*/
+			break;
+		case CGroup.BEJ:
+			$("body").attr("class",groupCss[1]);
+			$('.s_banner').empty();
+			$('.s_banner').append('<iframe src="images/sbanner/bej.html" width="100%" height="100%" frameborder="0"></iframe>');
+			/*if(IEVersion() == -1){
+				$('.s_banner').empty();
+				$('.s_banner').append('<iframe src="images/sbanner/bej.html" width="100%" height="100%" frameborder="0"></iframe>');
+			}else{
+				$('.s_banner').css('background-image', 'url(images/index/gif-bej.gif)');
+			}*/
+			break;
+		case CGroup.GNZ:
+			$("body").attr("class",groupCss[2]);
+			$('.s_banner').empty();
+			$('.s_banner').append('<iframe src="images/sbanner/gnz.html" width="100%" height="100%" frameborder="0"></iframe>');
+			/*if(IEVersion() == -1){
+				$('.s_banner').empty();
+				$('.s_banner').append('<iframe src="images/sbanner/gnz.html" width="100%" height="100%" frameborder="0"></iframe>');
+			}else{
+				$('.s_banner').css('background-image', 'url(images/index/gif-gnz.gif)');
+			}*/
+			break;
+		default://group
+			$("body").attr("class",groupCss[3]);
+			break;
+		}
+	}
+	//主drop切换
+	ctl.chg_drop = function(){
+		if(cgroup==CGroup.SNH || cgroup==CGroup.BEJ || cgroup==CGroup.GNZ){
+			$("#drop_t,#drop_news,#drop_member,#drop_song,#drop_video,#drop_theater").find(".item .g_name[data-g='"+ Object.keys(CGroup)[cgroup] +"']").parent().parent().each(function(){
+				$(this).parent().find(".curr").removeClass("curr");
+				$(this).addClass("curr");
+				$(this).parent().find(".def .g_name").text($(this).text())
+				try{
+					//$(this).parent().parent().find(".def .tag").attr("class",$(this).parent().find(".tag").attr("class"))
+				}catch(e){}
+			});
+			$(".ix_pocket .tabs .snh").click();
+		}else{
+			$("#drop_t,#drop_news,#drop_member,#drop_song").each(function(){
+				try{
+					var currG =$(this).find(".item .g_name[data-g='GROUP']").parent();
+					currG.parent().find(".curr").removeClass("curr");
+					$(this).addClass("curr");
+					$(this).parent().find(".def .g_name").text($(this).find(".g_name").text())
+					try{
+						$(this).parent().find(".def .tag").attr("class",$(this).find(".tag").attr("class"))
+					}catch(e){}
+				}catch(ee){
+					
+					//alert($(this).find(".item .g_name[data-g='GROUP']").html());
+				}
+			});
+			$("#drop_video,#drop_theater").find(".item .g_name[data-g='SNH']").parent().parent().each(function(){
+				$(this).parent().find(".curr").removeClass("curr");
+				$(this).addClass("curr");
+				$(this).parent().find(".def .g_name").text($(this).text())
+				try{
+					$(this).parent().find(".def .tag").attr("class",$(this).find(".tag").attr("class"))
+				}catch(e){}
+			});
+		}
+		
+		try{
+			var ctl = ix_control(cgroup);
+			ctl.chg_memNav();
+			ctl.chg_lmem(0);
+			ctl.chg_drop_ticket();
+			ctl.chg_song();
+			ctl.chg_drop_news();
+			ctl.chg_gg_news();//新闻广告
+			ctl.chg_vcate();
+			ctl.chg_address();
+			ctl.chg_day_star();//每日一星
+			ctl.chg_drop_video();//视频分组切换
+			ctl.chg_theater();//星梦剧院分团下拉切换
+		}catch(ee){console.log(ee.message)}
+	}
+	
+	//切换近期活动
+	ctl.chg_events = function(){
+		eventInfo();
+	}
+	
+	function eventInfo(){
+			
+			
+		var teamCss={"GROUP":"tt_group_tag","SNH":"tt_snh_tag","BEJ":"tt_bej_tag","GNZ":"tt_gnz_tag"};
+		var currEvent = "";
+		var tips_c=["#38baee","#f84972","#7abe2b","#38baee"];
+		ix_event_box.removeAllSlides();
+		var newSlide=$('<div class="swiper-slide"><ul class="ix_event_con"></ul></div>');
+		//ix_event_box.appendSlide('<div class="swiper-slide"><ul class="ix_event_con"></ul></div>');
+		var JItem = $('<li>'+
+			'<table class="t_con">'+
+				'<tr>'+
+					'<td>'+
+						'<div class="date skin_color">'+
+						'	01.31'+
+						'</div>'+
+					'</td>'+
+					'<td class="t_main">'+
+						'<div class="team_icon"></div>'+
+						'<div class="t_bt">'+
+						'	<div class="tt_tag"></div><br>'+
+						'	<span>蜜食记第四季</span>'+
+						'	<div class="v_line"></div>'+
+						'</div>'+
+						'<div class="b_line skin_bg"></div>'+
+					'</td>'+
+				'</tr>'+
+			'</table>'+
+		'</li>');
+		if(cgroup==0){
+		 var gid=1;	
+		}else if(cgroup==1){
+		 var gid=2;	
+		}else if(cgroup==2){
+		 var gid=3;	
+		}else if(cgroup==3){
+		 var gid=99;	
+		}
+		$.getJSON(site_url+"getevents.php?gid="+gid+"&callback=?",  
+            function(data){  
+			
+               if(data.status==200){
+				  
+			    	currEvent = data.desc;
+				 for(var i=0;i<currEvent.length;i++){
+					 var curr = JItem.clone();
+					
+					 curr.find(".date").html(currEvent[i]["time"]);
+					if(currEvent[i]["clock1"]!=""){
+						curr.find(".date").append('<div class="time">'+ currEvent[i]["clock1"] +'</div>');
+					}
+					if(currEvent[i]["clock2"]!=""){
+						curr.find(".date").append('<div class="time">'+ currEvent[i]["clock2"] +'</div>');
+					}
+					//新增判断电台杂志选项的图标
+					if(currEvent[i]["icon"]=="tv"){
+						curr.find(".team_icon").removeClass("team_icon").addClass("tv_icon");
+					}
+					else if(currEvent[i]["icon"]=="book"){
+						curr.find(".team_icon").removeClass("team_icon").addClass("book_icon");
+					}
+					else if(currEvent[i]["icon"]=="radio"){
+						curr.find(".team_icon").removeClass("team_icon").addClass("radio_icon");
+					}
+	
+			//var curr = JItem.clone();
+			curr.find(".tt_tag").addClass(teamCss[currEvent[i]["team"]]);
+			//
+			curr.find(".t_bt span").html(currEvent[i]["title"]);
+			if(currEvent[i]["icon"]=="tv")
+			 curr.find(".team_icon").removeClass("team_icon").addClass("tv_icon");
+			 newSlide.find(".ix_event_con").append(curr);
+		 }
+		
+		newSlide.find("li").each(function(index){
+			var currevent=$(this);
+			$(this).hover(function(){
+			  var that = this;
+			  var xzinfo=currEvent[index]["content"];
+			  layer.tips(xzinfo, that,{
+				  skin:"lay_fontc",
+				  area: ['auto', 'auto'],
+				  offset:['-30px', '-12px'],
+				  time:0,
+				  tips: [1, tips_c[cgroup]], //还可配置颜色,
+				  success: function(layero, index){
+					  layero.find(".layui-layer-content").css({"height":"auto","padding-bottom":"8px"});
+					  layero.css("left",(parseFloat(layero.css("left").replace("px",""))-12)+"px")
+					  var ofTop=-15;
+					  if(layero.offset().top<currevent.offset().top && !navigator.userAgent.toLowerCase().match(/chrome/)) ofTop=15;
+					  layero.css("top",(parseFloat(layero.css("top").replace("px",""))+ofTop)+"px")
+				  }
+				}); //在元素的事件回调体中，follow直接赋予this即可
+			},function(){
+				layer.closeAll();
+			});
+		});
+				   ix_event_box.appendSlide(newSlide);
+				ix_event_box.updateSlides();//更新数量
+				ix_event_box.updateSlidesClasses();//更新类名
+				ix_event_box.update();
+			  }
+        });
+		
+		
+		
+	}
+	//drop切换新闻
+	ctl.chg_drop_news = function(){
+		
+		switch(cgroup){
+		case CGroup.SNH:
+			 newslist(1);
+			break;
+		case CGroup.BEJ:
+		    newslist(2);
+			break;
+		case CGroup.GNZ:
+			 newslist(3);
+			break;
+		default://group
+	      newslist(99);
+			break;
+		}
+	}
+	//drop切换票务
+	
+	ctl.chg_drop_ticket = function(){
+		
+		var url =site_url+"gettickets.php";
+		
+		switch(cgroup){
+		case CGroup.SNH:
+			 tickets_info(url,1);
+			break;
+		case CGroup.BEJ:
+		    tickets_info(url,2);
+			break;
+		case CGroup.GNZ:
+			 tickets_info(url,3);
+			break;
+		default://group
+	       tickets_info(url,99);
+			break;
+		}
+	}
+	
+	//drop切换分团视频组
+	ctl.chg_drop_video = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log(videos_snh.SNH);
+			videoInfo(videos_snh.SNH)
+			break;
+		case CGroup.BEJ:
+			videoInfo(videos_bej.BEJ)
+			break;
+		case CGroup.GNZ:
+			videoInfo(videos_gnz.GNZ)
+			break;
+		default://group
+		  
+			videoInfo(videos_snh.SNH)
+			break;
+		}
+	}
+	//切换子信息，标题描述等。
+	ctl.chg_video_info = function(i){
+		switch(cgroup){		
+		case CGroup.SNH:			
+			videoInfo(videos_snh.SNH,i)
+			break;
+		case CGroup.BEJ:
+			videoInfo(videos_bej.BEJ,i)
+			break;
+		case CGroup.GNZ:
+			videoInfo(videos_gnz.GNZ,i)
+			break;
+		default://group
+			
+			videoInfo(videos_snh.SNH,i)
+			break;
+		}
+	}
+	//切换各分团总选广告位，是页面iframe嵌套
+	ctl.chg_votehtml = function(){
+		switch(cgroup){		
+		case CGroup.SNH:			
+			var data=ix_vote_snh;
+			break;
+		case CGroup.BEJ:
+			var data=ix_vote_bej;
+			break;
+		case CGroup.GNZ:
+			var data=ix_vote_gnz;
+			break;
+		default://group
+		 	var data=ix_vote_snh;
+			break;
+		}
+		
+		if(data.length!=0){
+			swiperVote.removeAllSlides();
+			for(i=0;i<data.length;i++){
+				var url=data[i].url;
+				var height=data[i].height;
+				if(isNaN(parseInt(height)))
+					height=495;
+				swiperVote.appendSlide('<div class="swiper-slide"><iframe src="'+ url +'" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" width="1270" height="'+ height +'" ></iframe></div>');
+			}
+			swiperVote.updateSlides();//更新数量
+			swiperVote.updateSlidesClasses();//更新类名
+			swiperVote.update();
+		}
+			
+	}
+	//0626新增
+	ctl.chg_GroupNav = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			team_tag.slideTo(0);
+			$("#team_tag .swiper-button-next,#team_tag .swiper-button-prev").hide();
+			break;
+		case CGroup.BEJ:
+			team_tag.slideTo(1);
+			$("#team_tag .swiper-button-next,#team_tag .swiper-button-prev").hide();
+			break;
+		case CGroup.GNZ:
+			team_tag.slideTo(2);
+			$("#team_tag .swiper-button-next,#team_tag .swiper-button-prev").hide();
+			break;
+		default://group
+			team_tag.slideTo(0);
+			$("#team_tag .swiper-button-next,#team_tag .swiper-button-prev").show();
+			break;
+		}
+	}
+	ctl.chg_flash = function(){
+			switch(cgroup){
+			case CGroup.SNH:
+				$(".s_cen embed").attr("src","/images/index/top_2019.swf");
+				break;
+			case CGroup.BEJ:
+				$(".s_cen embed").attr("src","/images/index/top_2019_b.swf");
+				break;
+			case CGroup.GNZ:
+				$(".s_cen embed").attr("src","/images/index/top_2019_g.swf");
+				break;
+			default://group
+				$(".s_cen embed").attr("src","/images/index/top_2019.swf");
+				break;
+			}
+		}
+	function video_cate(menu){
+		var n='';
+		var v_menu =$(".v_menu");
+		var str ='';
+		v_menu.empty();
+		for (n=0;n<menu.length;n++){			
+		 if(n==0){
+			  str+='<li class="active">'+menu[n].catname+'</li>';
+		}else{
+		  str+='<li>'+menu[n].catname+'</li>';
+		}
+		}
+		
+		v_menu.append(str);	
+		$(".v_menu li").mouseover(function(){
+		
+		if($(this).index()==$(".ix_video .active").index()) return false;
+		$(".v_menu .active").removeClass("active");
+		$(this).addClass("active");
+		var ctl = ix_control(CGroup[$("#drop_video .curr").find(".g_name").attr("data-g")]);
+		ctl.chg_video_info($(this).index());
+	});
+	}
+	
+	//首页视频分类选择
+
+	//更新视频子组,第一个参数单个分团视频组集合,第二个子组索引
+	function videoInfo(gv,i){
+		if(typeof(i)=="undefined"){
+			i=0;
+		}
+		
+		var JVideo = $("#video");
+		
+		JVideo.empty();
+		$(".v_menu .active").removeClass("active")
+		$(".v_menu li:eq("+ i +")").addClass("active")
+		if(gv){
+			
+			JVideo.append('<a class="v_top" href="'+ gv["g"+(i+1)][0].href +'">'+
+							'<img width="483px" height="278px" src="'+ gv["g"+(i+1)][0].image +'">'+
+							'<div class="v_txt">'+
+								gv["g"+(i+1)][0].title +
+							'</div>'+
+						'</a>');
+						
+			for(j=1;j<gv["g"+(i+1)].length;j++){
+				JVideo.append('<a class="v_item" href="'+ gv["g"+(i+1)][j].href +'">'+
+							'<img width="238px" height="133px" src="'+ gv["g"+(i+1)][j].image +'">'+
+							'<div class="v_txt">'+
+								gv["g"+(i+1)][j].title +
+							'</div>'+
+						'</a>');
+			}
+		}
+		
+	}
+	//切换视频栏目
+	ctl.chg_vcate = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			video_cate(vcate_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			video_cate(vcate_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			video_cate(vcate_gnz.GNZ);
+			break;
+		default://group
+			video_cate(vcate_snh.SNH);
+			
+			break;
+		}
+	}
+	
+	//切换星梦剧院信息
+	ctl.chg_theater = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			theater_info(theater_snh.SNH[0]);
+			break;
+		case CGroup.BEJ:
+			theater_info(theater_bej.BEJ[0]);
+			break;
+		case CGroup.GNZ:
+			theater_info(theater_gnz.GNZ[0]);
+			break;
+		default://group
+			break;
+		}
+	}
+		
+	function theater_info(gdata){
+	
+		$(".t_video iframe").attr("src",gdata.video);
+		$(".ix_theater .t_info .bt span").text(gdata.title);
+		$(".ix_theater .t_info .txt").html(gdata.txt+'<a class="more" href="theater.html" target="_blank">[更多]</a>');
+		theater_pho.removeAllSlides();
+		for(i=0;i<gdata.image.length;i++){
+			theater_pho.appendSlide('<div class="swiper-slide"><a href="'+ gdata.image[i].href +'" target="_blank"><img src="'+ gdata.image[i].src +'" alt=""></a></div>');
+		}
+		theater_pho.updateSlides();//更新数量
+  		theater_pho.updateSlidesClasses();//更新类名
+		theater_pho.update();
+	}
+	function address_info(gdata,gid){
+		    
+		   	for(var i in gdata){
+				$("#address .city").html(gdata[i].address);
+				$("#address .a_line").html("公交："+gdata[i].transit+"<br>地铁："+gdata[i].metro);
+				if(gid==1){
+					var m ="point";
+				}else if(gid==2){
+					var m ="point2";
+				}else if(gid==3){
+					var m ="point3";
+				}
+				
+				try{
+					mp.centerAndZoom(eval(m), 18);
+					label.setPosition(eval(m));
+					label.setContent(gdata[i].title+"星梦剧院");
+					marker.setPosition(eval(m));
+				}catch(ee){}
+			}
+	}
+	
+	//切换公交地址信息
+	ctl.chg_address = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			address_info(theater_snh.SNH,1);
+			break;
+		case CGroup.BEJ:
+		  address_info(theater_bej.BEJ,2);			
+			break;
+		case CGroup.GNZ:
+		  address_info(theater_gnz.GNZ,3);			
+			break;
+		default://group			
+			break;
+		}
+	}
+		
+	//切换歌单
+	ctl.chg_song = function(){
+		setTimeout(function(){
+			$("#jp-playlist").css({"overflow-y":"hidden"});
+			try{custom1.destroy();}catch(ee){}
+			switch(cgroup){
+			case CGroup.SNH:
+				
+				songs_info(ix_songs_snh.SNH,1);
+				myPlaylist.setPlaylist(ix_mp3list_snh);
+				break;
+			case CGroup.BEJ:
+				songs_info(ix_songs_bej.BEJ,2);
+				myPlaylist.setPlaylist(ix_mp3list_bej);
+				break;
+			case CGroup.GNZ:
+				songs_info(ix_songs_gnz.GNZ,3);
+				myPlaylist.setPlaylist(ix_mp3list_gnz);
+				break;
+			default://group
+				
+				songs_info(ix_songs_group.GROUP,0);
+				snh_s = JSON.stringify(ix_mp3list_snh);
+				bej_s = JSON.stringify(ix_mp3list_bej);
+				gnz_s = JSON.stringify(ix_mp3list_gnz);
+				bej_s = (bej_s.substring(0,bej_s.length-1));
+				
+				var d= snh_s.substring(0,snh_s.length-1)+","+bej_s.substring(1)+","+gnz_s.substring(1);
+				myPlaylist.setPlaylist(JSON.parse(d));
+				break;
+			}
+		},500);
+		setTimeout(function(){
+			custom1 = new scrollbot("#jp-playlist",4).setStyle({
+				"box-shadow": "-2px 2px 4px rgba(153,153,153,.5)"
+			},{
+				"background":"rgba(0,0,0,.1)"
+			});//音乐列表滚动条美化
+			//custom1.refresh();
+		},900);
+	}
+	
+	function songs_info(fdata,gid){
+		console.log(fdata);
+		var teamCss={"GROUP":"tt_group_tag","SNH":"tt_snh_tag","BEJ":"tt_bej_tag","GNZ":"tt_gnz_tag"};
+		var currEvent =fdata;
+		var tips_c=["#38baee","#f84972","#7abe2b","#38baee"];
+		$("#songlist_con").empty();
+		var title='';
+		var tgid='';
+		var nums="";
+		var JItem = $('<div class="item skin_bor_b">'+
+									'<span>心的旅程</span>'+
+									'<div class="time"></div>'+
+								'</div>');
+		
+				  
+			    	
+				 for(var i=0;i<currEvent.length;i++){
+					 var curr = JItem.clone();					
+					   curr.find(".time").html(currEvent[i]["songs_time"]);
+					   curr.find("span").html(currEvent[i]["songs_name"]);			     
+					  $("#songlist_con").append(curr);
+					  if(i==1){
+					   title = currEvent[i]["record_name"];
+					   tgid = currEvent[i]["gid"];
+					   nums =  currEvent[i]["nums"];
+					  }
+		
+				 }
+	    if(gid==0){
+			$(".s_zj").html("收录于"+tgid+"《"+title+"》");
+		}else{
+			$(".s_zj").html("收录于第"+nums+"张EP《"+title+"》");
+			}
+		
+		ix_song_box.update();			
+	
+	}
+	//切换商品列表,参数为分组索引
+	/*ctl.chg_goods = function(index){
+		
+		goods_slide.removeAllSlides()
+		for(i=0;i<goods["group"+(index+1)].length;i++){
+			goods_slide.appendSlide('<div class="swiper-slide"><a href="'+ goods["group"+(index+1)][i].href +'" target="_blank"><img src="'+ goods["group"+(index+1)][i].image +'" alt=""></a></div>');
+		}
+		goods_slide.updateSlides();//更新数量
+  		goods_slide.updateSlidesClasses();//更新类名
+		goods_slide.update();
+		ginfo(index);
+	}*/
+	ctl.chg_goods =function(index){
+		var cgroup1= (CGroup[$("#drop_g .curr").find(".g_name").attr("data-g")]);
+		switch(cgroup1){
+		case CGroup.SNH:
+			goods_list(goods_snh,index);
+			break;
+		case CGroup.BEJ:
+			goods_list(goods_bej,index);
+			break;
+		case CGroup.GNZ:
+			goods_list(goods_gnz,index);
+			break;
+		default://group
+			goods_list(goods_group,index);
+			break;
+		}
+	}
+	
+	//切换商品列表,参数为分组索引
+	function goods_list(goods,index){
+		
+		if(typeof(index)=="undefined"){
+			index=0;
+	  }
+		//console.log(goods,1);
+		goods_slide.removeAllSlides();
+		//console.log(goods["group"+(index+1)]);
+		for(i=0;i<goods["group"+(index+1)].length;i++){
+			//console.log(goods["group"+(index+1)][i].href);
+			goods_slide.appendSlide('<div class="swiper-slide"><a href="'+ goods["group"+(index+1)][i].url +'" target="_blank"><img src="'+ goods["group"+(index+1)][i].image +'" alt=""></a></div>');
+			
+		}
+	//	console.log(goods);
+		goods_slide.updateSlides();//更新数量
+  		goods_slide.updateSlidesClasses();//更新类名
+		goods_slide.update();
+		
+		ginfo(goods,index);
+	}
+	
+	
+	//切换商品列表,子信息，标题描述等。
+	ctl.chg_goods_info = function(index,i){
+		var cgroup1= (CGroup[$("#drop_g .curr").find(".g_name").attr("data-g")]);
+		switch(cgroup1){
+		case CGroup.SNH:
+			ginfo(goods_snh,index,i);
+			break;
+		case CGroup.BEJ:
+			ginfo(goods_bej,index,i);
+			break;
+		case CGroup.GNZ:
+			ginfo(goods_gnz,index,i);
+			break;
+		default://group
+			ginfo(goods_group,index,i);
+			break;
+		}
+		
+	}
+	
+	//商品信息写入,参数1分组索引，参数2组中某项索引
+	function ginfo(goods,index,i){
+		if(typeof(i)=="undefined"){
+			i=0;
+		}
+		var tags_css = {"group":"tt_tag tt_group_tag","snh":"tt_tag tt_snh_tag","bej":"tt_tag tt_bej_tag","gnz":"tt_tag tt_gnz_tag",
+						 "st":"shop_tag shop_tag1","xn":"shop_tag shop_tag2","xh":"shop_tag shop_tag3","by":"shop_tag shop_tag4",
+						 "ys":"shop_tag shop_tag5","jj":"shop_tag shop_tag6"};//st实体，xn虚拟，xh现货，by包邮，ys预售，jj竞价
+						
+		var gitem = goods["group"+(index+1)][i];
+		
+		//console.log(gitem);
+		var tags =gitem.tag.split(',');
+		//console.log(tags);
+		var tags_html="";
+		$(".g_info .g_bt").text(gitem.title);
+		for(t=0;t<tags.length;t++){
+			
+			tags_html+="<div class=\""+ tags_css[tags[t]] +"\" ></div>";
+		}
+		$(".g_info .g_tag").html(tags_html);
+		$(".g_info .g_txt").html(gitem.info);
+		$(".g_info .g_btn").attr("target","_blank");
+		$(".g_info .g_btn").attr("href",gitem.url);
+	
+		$(".g_info .g_btn .g_c").html('<span class="uit">￥</span>'+gitem.price);
+		$('.g_info').css("opacity","0").stop().animate({opacity:"1"},500);
+	}
+	
+	//切换每日成员风采
+	ctl.chg_day_star = function (){
+		switch(cgroup){
+		case CGroup.SNH:
+			day_star_info(1);
+			break;
+		case CGroup.BEJ:
+			day_star_info(2);
+			break;
+		case CGroup.GNZ:
+			day_star_info(3);
+			break;
+		default://group
+			day_star_info(99);
+			break;
+		}
+	}
+	function day_star_info(gid){
+		//浮动部分信息更新
+			
+		$.getJSON(site_url+"gettodaytui.php?gid="+gid+"&callback=?",  
+            function(data){  
+			
+               if(data.status==200){
+				   var ds = data.desc;
+				 
+					switch(gid){
+					case 99:
+						var gname="group";
+						break;
+					case 1:
+						var gname= "snh";
+						break;
+					case 2:
+						var gname= "bej";
+						break;
+					case 3:
+						var gname= "gnz";
+						break;
+					default://group
+						var gname= "group";
+						break;
+					}
+				//console.log(ds);
+				$(".ix_daily").attr("class","ix_plan ml p2_w p2_h ix_daily tt_s_bgddd d_team_"+ds.simg);
+			  	$(".ix_day_star .ds_h .bt .sname").html(unescape(ds.sname));
+				$(".ix_day_star .ds_o").attr("class","ds_o "+ds.gname.toLowerCase());
+				$(".ix_day_star .ds_h").attr("class","ds_h "+ds.gname.toLowerCase());
+				$(".ix_day_star .ds_h .t_icon").attr("src","images/team_tag/small/"+ds.simg+".png");
+				$(".ix_day_star .ds_o .pho img").attr("src",ds.img1);
+				$(".ix_day_star .ds_o .pho .name").html(ds.sname);
+				$(".ix_day_star .ds_o .pho .team").html("TEAM "+ds.tname);
+				//$(".ix_day_star .ds_o .pho .t_icon").attr("class","t_icon "+gname.toLowerCase()+"_icon").html("");
+				$(".ix_day_star .ds_o .wb").attr("class","wb skin_shadow "+ds.gname.toLowerCase());
+				$(".ix_day_star .ds_o .today").html("今天是"+ds.today);
+				$(".ix_day_star .ds_o table tr:eq(0) td:eq(1)").html(ds.nickname);
+				$(".ix_day_star .ds_o table tr:eq(0) td:eq(3)").html(ds.birth_place);
+				$(".ix_day_star .ds_o table tr:eq(1) td:eq(1)").html(ds.height+"CM");
+				$(".ix_day_star .ds_o table tr:eq(1) td:eq(3)").html(ds.blood_type+"型");
+				$(".ix_day_star .ds_o table tr:eq(2) td:eq(1)").html(ds.birth_day);
+				$(".ix_day_star .ds_o table tr:eq(2) td:eq(3)").html(ds.star_sign_12);
+				$(".ix_day_star .ds_o table tr:eq(3) td:eq(1)").html(ds.speciality);
+				$(".ix_day_star .ds_o table tr:eq(4) td:eq(1)").html(ds.hobby);
+				$(".ix_day_star .ds_o .wb").attr("href","https://weibo.com/"+ds.weibo_uid);
+				
+				//主体部分的成员风采切换
+				$(".ix_daily .m_pho").attr("href","http://www.snh48.com/member_details.html?sid="+ds.sid);
+				$(".ix_daily .m_pho img").attr("src","images/member/zp_"+ds.sid+".jpg");
+				$(".ix_daily .m_phos img").attr("width","192");
+				$(".ix_daily .m_phos img").attr("height","260");
+				$(".ix_daily .m_phos img:eq(0)").attr("src",ds.img1);
+				$(".ix_daily .m_phos img:eq(1)").attr("src",ds.img2);
+				$(".ix_daily .m_name").html(ds.sname+' <div class="tt_tag tt_'+ds.gname.toLowerCase()+'_tag"></div><div class="en">'+ ds.pinyin +' - TEAM '+ ds.tname +'</div>');
+				$(".ix_daily .m_info .m_p1:eq(0)").html('<span class="attr">身高</span>'+ ds.height +'CM');
+				$(".ix_daily .m_info .m_p1:eq(1)").html('<span class="attr">血型</span>'+ ds.blood_type);
+				$(".ix_daily .m_info .m_p1:eq(2)").html('<span class="attr">生日</span>'+ ds.birth_day);
+				$(".ix_daily .m_info .m_p1:eq(3)").html('<span class="attr">星座</span>'+ ds.star_sign_12);
+				$(".ix_daily .wb_btn").attr("href","https://weibo.com/u/"+ds.weibo_uid);
+		
+				m_his.removeAllSlides();
+				
+				var exs = ds.experience.split("<br/>")
+				for(i=0;i<exs.length;i++){
+					var date = exs[i].split(" ")[0];
+					var info = exs[i].replace(exs[i]+" ","")
+					m_his.appendSlide('<li class="swiper-slide">'+
+											'<div class="h_line"></div>'+
+											'<div class="h_time">'+ date +'</div>'+
+											'<div class="h_info">'+ info +'</div>'+
+										'</li>');
+				}
+				m_his.update();
+			  }
+    });  
+		
+		//unescape
+	}
+	
+	//切换横屏广告图片信息
+	ctl.chg_gg = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			gg_info(ixgg_data_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			gg_info(ixgg_data_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			gg_info(ixgg_data_gnz.GNZ);
+			break;
+		default://group
+			gg_info(ixgg_data_group.GROUP);
+			break;
+		}
+	}
+	//切换新闻广告图片信息
+	ctl.chg_gg_news = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			gg_news_info(ixgg_news_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			gg_news_info(ixgg_news_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			gg_news_info(ixgg_news_gnz.GNZ);
+			break;
+		default://group
+			gg_news_info(ixgg_news_group.GROUP);
+			break;
+		}
+	}
+		//最新唱片
+	ctl.chg_records = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			records_info(records_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			records_info(records_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			records_info(records_gnz.GNZ);
+			break;
+		default://group
+			records_info(records_group.GROUP);
+			break;
+		}
+	}
+	//粉丝合影
+	ctl.chg_fans = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+			$("#fanslink").attr("href","/photowall.html#SNH");
+			fans_info(ixfans_data_snh.SNH);
+			break;
+		case CGroup.BEJ:
+		$("#fanslink").attr("href","/photowall.html#BEJ");
+			fans_info(ixfans_data_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+		$("#fanslink").attr("href","/photowall.html#GNZ");
+			fans_info(ixfans_data_gnz.GNZ);
+			break;
+		default://group
+		$("#fanslink").attr("href","/photowall.html#GROUP");
+			fans_info(ixfans_data_group.GROUP);
+			break;
+		}
+	}
+		//生日之星
+	ctl.chg_bir = function(){
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			bir_info(1);
+			break;
+		case CGroup.BEJ:
+			bir_info(2);
+			break;
+		case CGroup.GNZ:
+			bir_info(3)
+			break;
+		default://group
+			bir_info(99);
+			break;
+		}
+	}
+	ctl.chg_plat = function(){
+			
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			plat_info(plat_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			plat_info(plat_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			plat_info(plat_gnz.GNZ)
+			break;
+		default://group
+			plat_info(plat_snh.SNH);
+			break;
+		}
+	}
+	ctl.chg_qq = function(){
+			
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			qq_info(qq_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			qq_info(qq_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			qq_info(qq_gnz.GNZ)
+			break;
+		default://group
+			qq_info(qq_snh.SNH);
+			break;
+		}
+	}
+	ctl.chg_gf_info = function(){
+			
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			gf_info(wb_snh.SNH,"SNH",1);
+			gf_info(tieba_snh.SNH,"SNH",2);
+			break;
+		case CGroup.BEJ:
+			gf_info(wb_bej.BEJ,"BEJ",1);
+			gf_info(tieba_bej.BEJ,"BEJ",2);
+			break;
+		case CGroup.GNZ:
+			gf_info(wb_gnz.GNZ,"GNZ",1);
+			gf_info(tieba_gnz.GNZ,"GNZ",2);
+			break;
+		default://group
+			gf_info(wb_group,'GROUP',1);
+			gf_info(tieba_group,'GROUP',2);
+			break;
+		}
+	}
+	ctl.chg_qr = function(){
+			
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			qr_info(qr_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			qr_info(qr_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			qr_info(qr_gnz.GNZ)
+			break;
+		default://group
+			qr_info(qr_group.GROUP);
+			break;
+		}
+	}
+	$(".wx_nav .wx_menu .item").on('click', function(e) {
+	
+	e.preventDefault()
+	$(".wx_nav .wx_menu .active").removeClass('active')
+	$(this).addClass('active')
+	wx_tabsSwiper.slideTo($(this).index())
+	})
+
+ctl.chg_beian = function(){
+		
+		switch(cgroup){
+		case CGroup.SNH:
+		//console.log();
+			beian_info(beian_snh.SNH,theater_snh.SNH);
+			break;
+		case CGroup.BEJ:
+			beian_info(beian_bej.BEJ,theater_bej.BEJ);
+			break;
+		case CGroup.GNZ:
+			beian_info(beian_gnz.GNZ,theater_gnz.GNZ)
+			break;
+		default://group
+			beian_info(beian_snh.SNH,theater_snh.SNH);
+			break;
+		}
+	}
+	
+	
+//左边栏成员面板队伍切换
+	//左边栏成员面板队伍切换
+	ctl.chg_lmem = function(currTeam){
+		try{
+			lmemMarquee.removeThis();
+		}catch(ee){}
+		//默认，top成员分组，1，2，3
+		
+		if(currTeam==0){
+			$("#left_mem .team li").empty();
+			$("#mem_g .active").removeClass("active");
+			setTimeout(tempf = function(){
+				if(left_members.length==0)
+					setTimeout(tempf,50);
+				else{//由于第一次进入页面该值还没有完成赋值，所以循环判断
+					var nums = new Array();
+					for (var i = 0 ; i < left_members.length ; i++) {
+						if(left_members[i].status == 99 && left_members[i].tid!=150 && left_members[i].tid!=151 && left_members[i].gid !=70 && left_members[i].tid!=199){
+							switch(cgroup){
+							case CGroup.SNH:
+								if(left_members[i].gid == "10")
+									nums.push(left_members[i].sid);
+								break;
+							case CGroup.BEJ:
+								if(left_members[i].gid == "20")
+									nums.push(left_members[i].sid);
+								break;
+							case CGroup.GNZ:
+								if(left_members[i].gid == "30")
+									nums.push(left_members[i].sid);
+								break;
+							default://group
+								nums.push(left_members[i].sid);
+								break;
+							}
+						}
+					}
+					var res = [];
+
+					for (var i = 0, len = nums.length; i < len; i++) {
+						var b = Math.floor(Math.random() * nums.length);
+						res[i] = nums[b];
+						nums.splice(b, 1);
+					}
+
+					var final = res.slice(0,20);
+					var html_random = '';
+					for (i = 0 ; i < final.length ; i++) {
+						html_random += '<a href="member_details.html?sid='+ final[i] +'" target="_blank">'+
+										'	<img src="images/member/zp_'+ final[i] +'.jpg">'+
+										'</a>';
+					}
+					$("#left_mem .team li").append(html_random);
+				}
+			},150);
+		}else if(currTeam<10){
+			console.log(currTeam);
+			var group1 = new Array();
+			var group2 = new Array();
+			var group3 = new Array();
+			var group4 = new Array();
+			var mem_sm = new Array();
+			for (var i = 0; i < left_members.length; i++) {
+				for(var m = 1;m <= 48;m++){//TODO 48
+					if(left_members[i].sid!=top_pos[m][0] && m != 1)
+						continue;
+					var Jlmth=$("");
+					if(m==1){
+						/*Jlmth=$('<a class="mem_big" href="http://www.li-yitong.com/" target="_blank">'+
+								'	<img src="images/member/zp_10031.jpg">'+
+								'	<div class="mem_icon"></div>'+
+								'</a>');*/
+								Jlmth=$('<a class="mem_big"  href="member_details.html?sid='+ top_pos[m][0] +'" target="_blank">'+
+								'	<img src="images/member/zp_'+ top_pos[m][0] +'.jpg">'+
+								'	<div class="mem_icon"></div>'+
+								'</a>');
+					}else if(top_pos[m][0]>20000 && top_pos[m][0]<30000){//北京团top成员
+						Jlmth=$('<a href="member_details.html?sid='+ top_pos[m][0] +'" target="_blank">'+
+								'	<img src="images/member/zp_'+ top_pos[m][0] +'.jpg">'+
+								'</a>');
+					}else if(top_pos[m][0]>30000 && top_pos[m][0]<40000){//广州团top成员
+						Jlmth=$('<a href="http://www.gnz48.com/member/member_details.html?sid='+ top_pos[m][0] +'" target="_blank">'+
+								'	<img src="images/member/zp_'+ top_pos[m][0] +'.jpg">'+
+								'</a>');
+					}else if(top_pos[m][0]>70000){//ft团top成员
+						Jlmth=$('<a href="http://idft.snh48.com/member-detail.html?id='+ top_pos[m][0] +'" target="_blank">'+
+								'	<img src="http://idft.snh48.com/image/member/zp_'+ top_pos[m][0] +'.jpg">'+
+								'</a>');
+					}else{//上海团top成员
+						Jlmth=$('<a href="member_details.html?sid='+ top_pos[m][0] +'" target="_blank">'+
+								'	<img src="images/member/zp_'+ top_pos[m][0] +'.jpg">'+
+								'</a>');
+					}
+					
+					if(m>=1&&m<=16){
+						if(m>=2 && m<=5){
+							mem_sm[m-2]=Jlmth.clone();
+							if(m==2){
+								group1[m-1]=$('<div class="mem_sm"></div>');
+							}
+						}else{
+							group1[m-1]=Jlmth.clone();
+						}
+					}
+					else if(m>=17&&m<=32){
+						group2[m-17]=Jlmth.clone();
+					}
+					else if(m>=33&&m<=48){
+						group3[m-33]=Jlmth.clone();
+					}
+					else if(m>=49&&m<=66){
+						group4[m-49]=Jlmth.clone();
+					}
+				}
+			}
+			$("#left_mem .team li").empty();
+			if(currTeam==1){
+				for(var g = 0; g<mem_sm.length;g++){
+					group1[1].append(mem_sm[g])
+				}
+				for(var g = 0; g<group1.length;g++){
+					if(group1[g])
+						$("#left_mem .team li").append(group1[g])
+				}
+				//增加占位图片,top的用总选logo占位填充
+				$("#left_mem .team li").append('<a class="def"><img src="images/temp/vote8/member_zx_8.png"></a>');
+			}
+			if(currTeam==2){
+				for(var g = 0; g<group2.length;g++){
+					$("#left_mem .team li").append(group2[g])
+				}
+				for(var g=0;g<4;g++){
+					$("#left_mem .team li").append('<a class="def"><img src="images/temp/vote8/member_zx_8.png"></a>');
+				}
+			}
+			if(currTeam==3){
+				for(var g = 0; g<group3.length;g++){
+					$("#left_mem .team li").append(group3[g])
+				}
+				for(var g=0;g<4;g++){
+					$("#left_mem .team li").append('<a class="def"><img src="images/temp/vote8/member_zx_8.png"></a>');
+				}
+			}
+		}else{
+			$("#left_mem .team li").empty();
+			var memhtml="";
+			//console.log(currTeam,1);
+			var team_img = {"101":"s","102":"n","103":"h","104":"x","201":"b","211":"bej","202":"e","203":"j","301":"g","302":"niii","303":"z"}
+			for(var i=0 ; i < left_members.length ;i++){
+				/*if(left_members[i].tid==101 && currTeam==101){
+					console.log(101,currTeam);
+				}
+				if(left_members[i].tid==102 && currTeam==102){
+					console.log(102,currTeam);
+				}
+				if(left_members[i].tid==103 && currTeam==103){
+					console.log(103,currTeam);
+				}
+				if(left_members[i].tid==104 && currTeam==104){
+					console.log(104,currTeam);
+				}*/
+				if(left_members[i].tid == currTeam && left_members[i].status==99){
+					memhtml+='<a href="/member_details.html?sid='+ left_members[i].sid +'" target="_blank">'+
+								'	<img src="images/member/zp_'+ left_members[i].sid +'.jpg">'+
+								'</a>';
+				}
+			}
+			$("#left_mem .team li").append(memhtml);
+			
+		    var html = ($("#left_mem .team li").html());
+			
+			if(html==undefined){
+				//console.log(222);//20200806add
+				$("#left_mem .team").append("<li>"+memhtml+"</li>");
+			}
+			var icount = 4-$("#left_mem .team li").children().size()%4;//一行4个，不足补齐，正好完整则加一整列占位4个
+			for(var i=0;i<icount;i++){
+				$("#left_mem .team li").append('<a class="def"><img src="images/member/member_'+ team_img[currTeam] +'.jpg"></a>');
+			}
+			try{
+				lmemMarquee.removeThis();
+			}catch(ee){
+				
+			}
+			
+			lmemMarquee = $("#left_mem").kxbdMarquee({direction:"up",isEqual:true,scrollDelay:50});
+		}
+		
+	}
+	
+
+//左边栏成员面板队伍,除了group,其他只显示当前团体队伍小面板，即禁止切换
+	ctl.chg_memNav = function(){
+		//$("#mem_g .group:eq(0)").mouseover();
+		switch(cgroup){
+		case CGroup.SNH:
+			left_memSwiper.slideTo(0);
+			$("#mem_team_nav .swiper-button-next,#mem_team_nav .swiper-button-prev").hide();
+			break;
+		case CGroup.BEJ:
+			left_memSwiper.slideTo(1);
+			$("#mem_team_nav .swiper-button-next,#mem_team_nav .swiper-button-prev").hide();
+			break;
+		case CGroup.GNZ:
+			left_memSwiper.slideTo(2);
+			$("#mem_team_nav .swiper-button-next,#mem_team_nav .swiper-button-prev").hide();
+			break;
+		default://group
+			left_memSwiper.slideTo(0);
+			$("#mem_team_nav .swiper-button-next,#mem_team_nav .swiper-button-prev").show();
+			break;
+		}
+	}
+	
+	//公演mvp
+	
+	ctl.chg_pocket_info = function(gid){
+		
+		pocket_info(gid);
+	}
+		function qq_info(data){
+		
+			var ix_qq = $(".qq_menu");
+		     ix_qq.empty();
+		     var str='';
+			for(i=0;i<data.length;i++){
+					
+					str +='<li class="skin_bor_b">'+data[i].title+
+							'<a class="btn" target="_blank" href="'+data[i].url+'"></a>'+
+						'</li>';
+			}
+		
+		 ix_qq.append(str);	
+		}
+		function gf_info(gdata,gid,ids){
+			if(ids==1){
+				var ix_gf = $("#drop_wb");
+				var title="微博";
+			}else{
+				var ix_gf = $("#drop_tb");
+					var title="贴吧";
+				}
+		     ix_gf.empty();
+		     var str='';
+			if(gid!='GROUP'){
+				for(i=0;i<gdata.length;i++){
+						str ='<a style="display:block;margin-top:5px" target="_blank" href="'+gdata[i].url+'" class="skin_color">'+gid+'48 '+title+'</a>';
+				}
+			}else{
+				    str +='<div class="item def skin_bg_op2">'+
+							'<div class="con">'+
+								'<div class="g_name">'+title+'入口</div>'+
+								'<div class="ct">◢</div>'+
+							'</div>'+
+						'</div>';
+					for(i=0;i<gdata.length;i++){
+							if(i==0){
+							str+='<div class="item curr">';
+							}else{
+								str+='<div class="item">';
+							}
+							str+='<div class="con">'+
+								'<div class="g_name"><a href="'+gdata[i].url+'" target="_blank">'+gdata[i].name+'48入口</a></div>'+
+							'</div>'+
+						'</div>';	
+					}	
+			}
+		 ix_gf.append(str);	
+		}
+		function footer_address(data){
+			//console.log(data)
+			
+		}
+		function qr_info(data){
+				
+		/*	var ix_qr = $("#qr_list");
+			 var ix_qr_menu = $(".wx_menu");
+		     ix_qr.empty();
+			 ix_qr_menu.empty();
+		     var str='';
+			 var str1='';
+			for(i=0;i<data.length;i++){
+					
+					str +='<div class="swiper-slide">'+
+								'<img height="118px"  src="'+data[i].title+'" alt="">'+
+							'</div>';
+							if(i==0){
+				    			str1 +='<li class="item active"><div class="m_name">'+data[i].name+'</div></li>';
+							}else{
+							   str1 +='<li class="item"><div class="m_name">'+data[i].name+'</div></li>';
+							}
+			}*/
+			 wx_tabsSwiper.removeAllSlides()
+		 var ix_qr_menu = $(".wx_menu");
+		  ix_qr_menu.empty();
+		  var str1='';
+		for(i=0;i<data.length;i++){			
+				
+			wx_tabsSwiper.appendSlide('<div class="swiper-slide">'+
+								'<img height="118px"  src="'+data[i].title+'" alt="">'+
+							'</div>');
+						if(i==0){
+				    			str1 +='<li class="item active"><div class="m_name">'+data[i].name+'</div></li>';
+							}else{
+							   str1 +='<li class="item"><div class="m_name">'+data[i].name+'</div></li>';
+							}
+		}
+		ix_qr_menu.append(str1);
+		
+
+		wx_tabsSwiper.updateSlides();//更新数量
+  		wx_tabsSwiper.updateSlidesClasses();//更新类名
+		wx_tabsSwiper.update();
+		
+		wx_tabsSwiper.slideToLoop(0,0);
+			
+			$(".wx_nav .wx_menu .item").on('click', function(e) {
+	
+			e.preventDefault()
+			$(".wx_nav .wx_menu .active").removeClass('active')
+			$(this).addClass('active')
+			wx_tabsSwiper.slideTo($(this).index())
+			})	
+		}
+		function beian_info(data,fdata){
+
+		
+			var ix_bt = $("#bat");
+			var ix_beian = $(".txt_beian");		
+				
+		      ix_bt.empty();
+			  ix_beian.empty();
+		     var str='';
+			 var str1='';
+			for(i=0;i<data.length;i++){
+				    
+					
+					str +=data[i].name;
+					str1+=data[i].title;
+					
+					
+			}
+	
+		 ix_bt.append(str);	
+		
+		ix_beian.append(str1);
+		
+		$("#faddress").html(fdata[0].address);	
+		}
+		function fans_info(fdata){
+		var ix_fans = $(".ix_fans");
+		ix_fans.empty();
+		var str='<ul>';
+		for(i=0;i<fdata.length;i++){
+				
+				str +='<li>'+
+							'<a href="'+fdata[i]['href']+'" target="_blank">'+
+								'<img src="'+fdata[i]['src']+'">'+
+							'</a>'+
+						'</li>';
+		}
+		str+='</ul>';
+		ix_fans.append(str);
+		try{
+				fansdMarquee.removeThis();
+			}catch(ee){}
+		setTimeout(function(){
+			fansdMarquee =$(".ix_fans").kxbdMarquee({direction:"up",isEqual:true,scrollDelay:50});
+		},500)
+		
+	}
+	
+	
+	return ctl;
+}
+
+//时间倒计时插件---endDateStr:截止时间格式Jul 27, 2019 12:00:00，月份必须为英文缩写否则谷歌不兼容
+var arrTimeObj = new Array();
+function TimeDown_pro(){
+	this.stamp = 0;//时间差，单位秒
+	this.tid = 1;
+	this.close = 0;//关闭操作，因为切换分团会重新new一个对象导致多重倒计时。
+	this.intervalTime = function(obj){
+		if(this.stamp > 0 && this.close == 0){
+			try{
+				var day = Math.floor(this.stamp / (60 * 60 * 24));
+				var hour = Math.floor(this.stamp / (60 * 60)) - (day * 24);
+				var minute = Math.floor(this.stamp / 60) - (day * 24 * 60) - (hour * 60);
+				var second = Math.floor(this.stamp) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+
+				if (day <= 9) day = '0' + day;
+				if (hour <= 9) hour = '0' + hour;
+				if (minute <= 9) minute = '0' + minute;
+				if (second <= 9) second = '0' + second;
+			}catch(ee){
+				console.log(ee.message);
+			}
+			try{
+				jQuery('.cd_day_'+this.tid).html(day);
+				jQuery('.cd_hour_'+this.tid).html(hour);
+				jQuery('.cd_min_'+this.tid).html(minute);
+				jQuery('.cd_sec_'+this.tid).html(second);
+			}catch(ee){}
+			this.stamp--;
+			setTimeout(function(){
+				obj.intervalTime(obj);
+			},1000);
+		}else if(this.close == 0){
+			try{
+				jQuery('.cdown_'+this.tid).html("投票已截止");
+			}catch(ee){}
+		}
+	},
+	this.timer=function (endDateStr,tid){
+		this.stamp = Date.parse(new Date(endDateStr))/1000-parseInt(Date.parse(new Date())/1000);//剩余时间戳
+		this.tid = tid;
+		this.close = 0;
+		this.intervalTime(this);
+		//setTimeout('if(typeof(TimeDown_pro.intervalTime) == "function"){TimeDown_pro.intervalTime();}',1000);
+	}
+};
+
+	function plat_info(fdata){
+		var ix_plats = $("#drop_live");
+		ix_plats.empty();
+		var str='<div class="item def "><div class="con"><div class="g_name">选择直播平台</div><div class="ct">◢</div></div></div>';
+								
+							
+						
+		for(i=0;i<fdata.length;i++){
+				
+				str +='<div class="item curr">'+
+							'<div class="con">'+
+								'<div class="g_name"><a target="_blank" href="'+fdata[i].url+'">'+fdata[i].title+'</a></div>'+
+							'</div>'+
+						'</div>';
+		}
+		//str+='<></div>';
+		ix_plats.append(str);	
+	}
+	function records_info(fdata){
+			
+		var currEvent =fdata;
+		
+		$("#disc_list").empty();
+		var title='';
+		var tgid='';
+		var JItem = $('<li class="swiper-slide">'+
+								'<a class="d_item" href="#" target="_blank">'+
+									'<div class="d_bg"></div>'+
+									'<div class="d_cover">'+
+										'<img src="">'+
+										'<div class="pers">SNH48 GROUP</div>'+
+									'</div>'+
+									'<div class="d_txt">'+
+										''+
+									'</div>'+
+								'</a>'+
+							'</li>');
+		
+				  
+			    	
+				 for(var i=0;i<currEvent.length;i++){
+					 var curr = JItem.clone();	
+						curr.find(".d_item").attr("href",currEvent[i].url);		
+						curr.find(".d_cover img").attr("src",currEvent[i].image);		
+						curr.find(".pers").html(currEvent[i].team);		
+					    curr.find(".d_txt").html(currEvent[i]["title"]);
+					    curr.find("pers").html(currEvent[i]["team"]);			     
+					   $("#disc_list").append(curr);
+					  
+		
+				 }
+	   
+		ix_disc_box.update();		
+		/*var ix_records = $(".ix_disc");
+		ix_records.empty();
+		var str='<div class="swiper-container" id="disc"><ul class="swiper-wrapper">';					
+		for(i=0;i<fdata.length;i++){
+				
+				str +='<li class="swiper-slide">'+
+								'<a class="d_item" href="'+fdata[i].url+'" target="_blank">'+
+									'<div class="d_bg"></div>'+
+									'<div class="d_cover">'+
+										'<img src="'+fdata[i].image+'">'+
+										'<div class="pers">'+fdata[i].team+'</div>'+
+									'</div>'+
+									'<div class="d_txt">'+fdata[i].title
+										
+									'</div>'+
+								'</a>'+
+							'</li>';
+		}
+		str+='</ul></div>';
+		ix_records.append(str);
+		*/
+	}
+    function gg_news_info(gdata){
+		
+	    swiperNews.removeAllSlides()
+		
+		for(i=0;i<gdata.length;i++){			
+					
+			swiperNews.appendSlide('<div class="swiper-slide"><a href="'+ gdata[i].href +'" target="_blank"><img src="'+ gdata[i].src +'" alt=""></a></div>');
+		}
+		
+
+		swiperNews.updateSlides();//更新数量
+  		swiperNews.updateSlidesClasses();//更新类名
+		swiperNews.update();
+		
+		swiperNews.slideToLoop(0,0);
+		
+		
+	}
+	function gg_info(gdata){
+		swiperBanner.removeAllSlides()
+		
+		for(j=0;j<arrTimeObj.length;j++){
+			arrTimeObj[j].close=1;//关闭原来的
+		}
+		var arrPosition=new Array();
+		var arrCountDown=new Array();
+		for(i=0;i<gdata.length;i++){
+			bannerColor[i]=gdata[i].bgColor;
+			var countDown_code="";
+			//增加测试倒计时，本来应该用gdata[i].isCountDown这种参数判断
+			/*if(i==1 || i==2){
+				//里面的left,bottom,font-size:20px,color:#fff;都是需要改变的
+				CountDown_code=
+					'<div class="cdown_'+i+'" style="position:absolute; text-align:center; width:395px; height:32px; left: 300px; bottom: 74px; font-size:20px; font-weight:bold;color:#fff;">'+
+						'还有<span class="cd_day_'+i+'" style="color:#ffd21d;width:30px; margin:0 5px;"></span>天'+
+						'<span class="cd_hour_'+i+'" style="color:#ffd21d;width:30px; margin:0 5px;"></span>小时'+
+						'<span class="cd_min_'+i+'" style="color:#ffd21d;width:30px; margin:0 5px;"></span>分'+
+						'<span class="cd_sec_'+i+'" style="color:#ffd21d;width:30px; margin:0 5px;"></span>秒'+
+					'</div>';
+			}*/
+			if(gdata[i].isCountDown == "1"){
+				countDown_code = gdata[i].countDown_code;
+				arrPosition.push(gdata[i].position);
+				arrCountDown.push(gdata[i].countDown_time);
+			}
+			swiperBanner.appendSlide('<div class="swiper-slide"><a href="'+ gdata[i].href +'" target="_blank"><img class="swiper-lazy" data-src="'+ gdata[i].src +'" alt=""></a>'+countDown_code+'</div>');
+		}
+		
+
+		swiperBanner.updateSlides();//更新数量
+  		swiperBanner.updateSlidesClasses();//更新类名
+		swiperBanner.update();
+		$(".ix_banner").css({backgroundColor:bannerColor[0]});
+		swiperBanner.slideToLoop(0,0);
+		
+		for(j=0;j<arrPosition.length;j++){
+			arrTimeObj[j] = new TimeDown_pro();
+			arrTimeObj[j].timer(arrCountDown[j],arrPosition[j]);
+		}
+	}
+
+
+
+
+function bir_info(gid){
+	
+	$.getJSON(site_url+"getbir.php?gid="+gid+"&callback=?",  
+            function(data){  
+			
+               if(data.status==200){
+			  	var str='';
+				var bir = $("#ix_bir");
+				bir.empty();
+				for(var i in data.desc){
+					 var j =parseInt(i)+1;
+					 var snh_icon = '';
+					 var gname='';
+					 if(data.desc[i].gid==10){
+							snh_icon = "snh_icon";
+							gname="SNH48";
+					}if(data.desc[i].gid==20){
+							snh_icon = "bej_icon";
+							gname="BEJ48";
+					}if(data.desc[i].gid==30){
+							snh_icon = "gnz_icon";
+							gname="GNZ48";
+					}
+					  str+='<div class="ix_bir_pho">'+
+						'<img src="'+data.desc[i].images+'" alt="">'+
+						'<div class="t_icon '+snh_icon+'">'+gname+'</div>'+
+						'<div class="b_info">'+
+							'<div class="b_name">'+data.desc[i].realname+'</div>'+
+							'<div class="b_xz">'+data.desc[i].birthday+' '+data.desc[i].xingzuo+'</div>'+
+						'</div>'+
+					'</div>';
+						
+				}
+			
+				bir.append(str);
+			  }
+    });  
+}
+function newslist(gid){
+	
+	$.getJSON(site_url+"getnews.php?type=top&gid="+gid+"&callback=?",  
+            function(data){  
+			
+               if(data.status==200){
+			  	var str='';
+				var news = $(".n_con");
+				news.empty();
+				for(var i in data.desc){
+					 var j =parseInt(i)+1;
+					  if(data.desc[i].is_top==1){
+							var top= 'n_top_icon';
+						}else{
+							var top = 'n_top_icon1';
+						}
+						str+='<li>'+
+							'<div class="tt_tag tt_'+data.desc[i].gname+'_tag"></div>'+
+							'<div class="news_tag news_tag'+data.desc[i].catid+'"></div>'+
+							'<div class="n_bt">'+
+								'<a target="_blank" href="'+data.desc[i].url+'">'+data.desc[i].title+'</a>'+
+								'<div class="'+top+'"></div>'+
+							'</div>'+
+							'<div class="n_time">'+data.desc[i].ctime+'</div>'+
+						'</li>';
+				}
+			
+				news.append(str);
+			  }else{
+				 var news = $(".n_con");
+				news.empty(); 
+				 }
+    });  
+}
+function tickets_info(url,gid){
+$.ajax({
+   
+    url: url,//告诉后台这是一个jsonp请求，需要调用什么方法，如果为“？”，jq会帮你自动生成（如果使用jq一般都设置为“？”，这样才能在成功时触发jq的回调函数）
+    type:"post",//jsonp只能发get请求，就算我设置请求类型为post
+    dataType:"jsonp",//告诉jquery这是一个jsonp的数据，需要生成script标签来加载js
+	async:true,
+    data:{
+        gid:gid
+    },
+    success: function (data) {//成功后jq会执行的方法（如果callback参数为“？”）
+      if(data.status==200){
+		var JTickets = $(".ix_ticket_con");
+		JTickets.empty();
+		var tickets=data.desc;
+		var str='';
+		if(tickets){
+			for(var i in tickets){
+				
+				if(i<4){				
+			 	str += '<li class="ix_ticket tt_'+tickets[i]['s_tag']+'_bg">'+
+						'<table class="t_con">'+
+							'<tr>'+
+								'<td class="tt_'+tickets[i]['s_tag']+'_bor">'+
+									'<div class="date">'+
+										tickets[i]['d']+
+										'<div class="time">'+tickets[i]['h']+'</div>'+
+									'</div>'+
+								'</td>'+
+								'<td class="t_main">'+
+									'<div class="t_bt">'+
+										'<div class="tt_tag tt_'+tickets[i]['team']+'_tag"></div>'+tickets[i]['title']+''+
+									'</div>'+
+									'<div class="t_sbt">'+
+										tickets[i]['ext']+
+										'<div class="v_line"></div>'+
+									'</div>';
+									
+										for(var j in tickets[i]['sub']){
+											
+											if(tickets[i]['sub'][j]['seat_type']==1){
+												var s='s';
+											}
+											else if(tickets[i]['sub'][j]['seat_type']==2){
+												var s='v';
+											}
+											else if(tickets[i]['sub'][j]['seat_type']==3){
+												var s='u';
+											}
+											else if(tickets[i]['sub'][j]['seat_type']==4){
+												var s='d';
+											}
+										  str+='<a class="btn btn_'+s+'" target="_blank" href="'+tickets[i]['sub'][j]['url']+'">'+tickets[i]['sub'][j]['seat_name']+'</a>';
+										}
+													
+									 str+='<div class="b_line skin_bg"></div>'+
+								'</td>'+
+							'</tr>'+
+						'</table>'+
+					'</li>';
+				}
+			}
+		}
+		
+		if(tickets.length==3){
+			str+='<img style="position:relative;" src="/images/index/not1.jpg"/>';
+		}else if(tickets.length==2){
+			str+='<img style="position:relative;" src="/images/index/not2.jpg"/>';
+		}else if(tickets.length==1){
+			str+='<img style="position:relative;" src="/images/index/not3.jpg"/>';
+		}else if(tickets.length==0){
+			str+='<img src="/images/index/notall.jpg"/>';
+		}
+		
+		JTickets.append(str);
+	 }else{
+		var JTickets = $(".ix_ticket_con");
+		var str='';
+		JTickets.empty();
+		str+='<img  style="position:relative;" src="/images/index/not_all.jpg"/>';
+				
+	
+		JTickets.append(str);
+	}
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+         //alert(errorThrown);
+    }
+
+}).done(function(data){
+    //console.log(data);
+});
+}
+
+function pocket_info(gid){
+	if(gid==3){
+	gid=1;	
+}else{
+	gid=gid+1;
+}
+$.ajax({
+   
+    url: site_url+"getpocket.php",//告诉后台这是一个jsonp请求，需要调用什么方法，如果为“？”，jq会帮你自动生成（如果使用jq一般都设置为“？”，这样才能在成功时触发jq的回调函数）
+    type:"post",//jsonp只能发get请求，就算我设置请求类型为post
+    dataType:"jsonp",//告诉jquery这是一个jsonp的数据，需要生成script标签来加载js
+	async:true,
+    data:{
+        gid:gid
+    },
+    success: function (data) {//成功后jq会执行的方法（如果callback参数为“？”）
+		$(".pocket_live").empty();
+		$(".topic_box").empty();
+      if(data.status==200){
+		
+		var list =data.desc;
+		var list_snh=data.desc.snh;
+		var list_bej=data.desc.bej;
+		var list_gnz=data.desc.gnz;
+		var list_topic = data.desc1;
+		
+		var live_list = "";
+		if(data.livelist!=null){
+			live_list = data.livelist;
+			
+		}else{
+			//live_list = data.history_live;	
+		}	
+		
+		
+		 if(live_list){
+			 var t ="";
+			 for(i=0;i<5;i++){
+				 //console.log(i);			
+			 	t+='<div class="live_m">'+
+								
+								'<a target="_blank" href="http://h5.48.cn/pocket48/index_pc.html"><img width="130px" height="130px" src="'+live_list[i].coverPath+'" alt=""></a>'+
+								'<div class="info">'+
+									'<div class="name">'+live_list[i].nickname+'</div>'+
+									'<div class="live_ti">'+live_list[i].types+'</div>'+
+								'</div>'+
+							'</div>';
+			 }
+			
+			 $("#pocket_live").html(t);
+		 }
+		if(list_topic){
+			var t='';
+			var i=0;
+			for(var m in list_topic){
+				t+='<div class="topic skin_bg_op">'+
+							'<div class="t_left">'+
+								'<img width="50px" height="50px" src="'+list_topic[m].imgPath+'" alt="">'+
+							'</div>'+
+							'<div class="t_con">'+
+								'<div class="bt skin_color">#'+list_topic[m].name+'#</div>'+
+								'<div class="txt">'+list_topic[m].description+'</div>'+								
+						/*		'<div class="r_num">'+list_topic[m].comment+'</div>'+
+								'<div class="r_bz">讨论</div>'+
+								'<div class="r_line"></div>'+*/
+								'<div class="r_num">'+list_topic[m].read+'</div>'+
+								'<div class="r_bz">阅读</div>'+
+							'</div>'+
+							'<div class="clearfix"></div>'+
+							'<div class="b_line skin_bg"></div>'+
+							'<div class="pho">'+
+								'<img src="'+list_topic[m].reply_avatar+'">'+
+							'</div>'+
+							'<div class="say_con skin_bg">'+
+								list_topic[m].replay_txt+
+							'</div>'+
+						'</div>';
+						i++;
+			}
+			if(i==1){
+			t+='<div class="topic skin_bg_op">'+
+							'<div class="t_left">'+
+								
+							'</div>'+
+							'<div class="t_con">'+
+								'<div class="bt skin_color"></div>'+
+								'<div class="txt"></div>'+								
+								'<div class="r_num"></div>'+
+								'<div class="r_bz"></div>'+
+								
+								'<div class="r_num"></div>'+
+								'<div class="r_bz"></div>'+
+							'</div>'+
+							'<div class="clearfix"></div>'+
+							'<div class="b_line skin_bg"></div>'+
+							'<div class="pho">'+
+							
+							'</div>'+
+						
+						'</div>';	
+			}
+			console.log(i);
+			$(".topic_box").append(t);
+		}
+		if(list_snh){
+		var str='';
+		mvpsnhSwiper.removeAllSlides();
+		
+		for(i=0;i<list_snh.length;i++){			
+					 str+='<li class="swiper-slide">'+
+					'<div class="snh_con">'+
+					'<div class="bt">'+
+					  '<div class="con">'+
+						 ' <div class="time">'+list_snh[i]['liveTime']+'</div>'+ list_snh[i]['teamName']+' '+list_snh[i]['liveName']+'</div> </div>';
+						 
+						 var subs =list_snh[i]['ranklist'];
+				str+='<ul class="pm_list">';
+				for(var j in subs){
+						str+='<li>';
+						 if(subs[j].rankId<=3){
+							str+='<div class="num num1">'+subs[j].rankId+'</div>';
+							}else{
+							str+='<div class="num ">'+subs[j].rankId+'</div>';	
+							}
+						 
+						  str+='<div class="pho"><img src="'+subs[j].avatar+'"></div>'+
+						  '<div class="pm_name">'+
+							  subs[j].sname+
+							  '<div class="t_'+subs[j]['s_tag']+'_color">'+subs[j]['team']+'</div>'+
+						  '</div>'+
+						  '<div class="poll">'+
+							   subs[j].ticketNum+' <span class="dw">票</span>'+
+						  '</div>'+
+						  '<div class="pm_line"></div>'+
+					  '</li>';
+				}
+				str+='</ul><a href="https://h5.48.cn/2019apppage/apphelp/user_guide_mvp_rank.html" target="_blank" class="gz">查看《公演MVP评选规则》</a></div></li>';
+			mvpsnhSwiper.appendSlide(str);
+		}
+		
+
+		mvpsnhSwiper.updateSlides();//更新数量
+  		mvpsnhSwiper.updateSlidesClasses();//更新类名
+		mvpsnhSwiper.update();
+		
+		mvpsnhSwiper.slideToLoop(0,0);
+			/*var str='';
+			var Jmvp = $("#snh_box");
+			Jmvp.empty();
+			for(var i in list_snh){
+			
+			 str+='<li class="swiper-slide">'+
+					'<div class="snh_con">'+
+					'<div class="bt">'+
+					  '<div class="con">'+
+						 ' <div class="time">'+list_snh[i]['liveTime']+'</div>'+ list_snh[i]['teamName']+' '+list_snh[i]['liveName']+'</div> </div>';
+						 
+						 var subs =list_snh[i]['ranklist'];
+				str+='<ul class="pm_list">';
+				for(var j in subs){
+					str+='<li>'+
+						 '<div class="num num1">'+subs[j].rankId+'</div>'+
+						  '<div class="pho"><img src="'+subs[j].avatar+'"></div>'+
+						  '<div class="pm_name">'+
+							  subs[j].sname+
+							  '<div class="t_'+subs[j]['s_tag']+'_color">'+list_snh[i]['teamName']+'</div>'+
+						  '</div>'+
+						  '<div class="poll">'+
+							   subs[j].ticketNum+' <span class="dw">票</span>'+
+						  '</div>'+
+						  '<div class="pm_line"></div>'+
+					  '</li>';
+				}
+				str+='</ul><a href="" target="_blank" class="gz">查看《公演MVP评选规则》</a></div></li>';
+
+			}
+			
+			Jmvp.append(str);*/
+		}
+		if(list_bej){
+			var str='';
+			mvpbejSwiper.removeAllSlides();
+	
+			for(var i in list_bej){
+			 str+='<li class="swiper-slide">'+
+					'<div class="bej_con">'+
+					'<div class="bt">'+
+					  '<div class="con">'+
+						 ' <div class="time">'+list_bej[i]['liveTime']+'</div>'+ list_bej[i]['teamName']+' '+list_bej[i]['liveName']+'</div> </div>';
+						 
+						 var subs =list_bej[i]['ranklist'];
+				str+='<ul class="pm_list">';
+				for(var j in subs){
+							str+='<li>';
+					 		if(subs[j].rankId<=3){
+							str+='<div class="num num1">'+subs[j].rankId+'</div>';
+							}else{
+							str+='<div class="num ">'+subs[j].rankId+'</div>';	
+							}
+						
+						str+= '<div class="pho"><img src="'+subs[j].avatar+'"></div>'+
+						  '<div class="pm_name">'+
+							  subs[j].sname+
+							  '<div class="t_'+subs[j]['s_tag']+'_color">'+subs[j]['team']+'</div>'+
+						  '</div>'+
+						  '<div class="poll">'+
+							   subs[j].ticketNum+' <span class="dw">票</span>'+
+						  '</div>'+
+						  '<div class="pm_line"></div>'+
+					  '</li>';
+				}
+				str+='</ul><a href="https://h5.48.cn/2019apppage/apphelp/user_guide_mvp_rank.html" target="_blank" class="gz">查看《公演MVP评选规则》</a></div></li>';
+				
+				mvpbejSwiper.appendSlide(str);
+			}
+			
+					
+		mvpbejSwiper.updateSlides();//更新数量
+  		mvpbejSwiper.updateSlidesClasses();//更新类名
+		mvpbejSwiper.update();
+		
+		mvpbejSwiper.slideToLoop(0,0);
+			/*var str='';
+			var Jmvp = $("#bej_box");
+			Jmvp.empty();
+			for(var i in list_bej){
+			 str+='<li class="swiper-slide">'+
+					'<div class="bej_con">'+
+					'<div class="bt">'+
+					  '<div class="con">'+
+						 ' <div class="time">'+list_bej[i]['liveTime']+'</div>'+ list_bej[i]['teamName']+' '+list_bej[i]['liveName']+'</div> </div>';
+						 
+						 var subs =list_bej[i]['ranklist'];
+				str+='<ul class="pm_list">';
+				for(var j in subs){
+					str+='<li>'+
+						 '<div class="num num1">'+subs[j].rankId+'</div>'+
+						  '<div class="pho"><img src="'+subs[j].avatar+'"></div>'+
+						  '<div class="pm_name">'+
+							  subs[j].sname+
+							  '<div class="t_'+subs[j]['s_tag']+'_color">'+list_bej[i]['teamName']+'</div>'+
+						  '</div>'+
+						  '<div class="poll">'+
+							   subs[j].ticketNum+' <span class="dw">票</span>'+
+						  '</div>'+
+						  '<div class="pm_line"></div>'+
+					  '</li>';
+				}
+				str+='</ul></div></li>';
+
+			}
+				
+			Jmvp.append(str);*/
+		}
+		if(list_gnz){
+			
+			var str='';
+			for(var i in list_gnz){
+			 str+='<li class="swiper-slide">'+
+					'<div class="gnz_con">'+
+					'<div class="bt">'+
+					  '<div class="con">'+
+						 ' <div class="time">'+list_gnz[i]['liveTime']+'</div>'+ list_gnz[i]['teamName']+' '+list_gnz[i]['liveName']+'</div> </div>';
+						 
+						 var subs =list_gnz[i]['ranklist'];
+				str+='<ul class="pm_list">';
+				for(var j in subs){
+							str+='<li>';
+					
+							if(subs[j].rankId<=3){
+							str+='<div class="num num1">'+subs[j].rankId+'</div>';
+							}else{
+							str+='<div class="num">'+subs[j].rankId+'</div>';	
+							}
+						 str+= '<div class="pho"><img src="'+subs[j].avatar+'"></div>'+
+						  '<div class="pm_name">'+
+							  subs[j].sname+
+							  '<div class="t_'+subs[j]['s_tag']+'_color">'+subs[j]['team']+'</div>'+
+						  '</div>'+
+						  '<div class="poll">'+
+							   subs[j].ticketNum+' <span class="dw">票</span>'+
+						  '</div>'+
+						  '<div class="pm_line"></div>'+
+					  '</li>';
+				}
+				str+='</ul><a href="https://h5.48.cn/2019apppage/apphelp/user_guide_mvp_rank.html" target="_blank" class="gz">查看《公演MVP评选规则》</a></div></li>';
+				mvpgnzSwiper.appendSlide(str);
+			}
+			
+			mvpgnzSwiper.updateSlides();//更新数量
+			mvpgnzSwiper.updateSlidesClasses();//更新类名
+			mvpgnzSwiper.update();
+			
+			mvpgnzSwiper.slideToLoop(0,0);
+			/*var str='';
+			var Jmvp = $("#gnz_box");
+			Jmvp.empty();
+			for(var i in list_gnz){
+			 str+='<li class="swiper-slide">'+
+					'<div class="gnz_con">'+
+					'<div class="bt">'+
+					  '<div class="con">'+
+						 ' <div class="time">'+list_gnz[i]['liveTime']+'</div>'+ list_gnz[i]['teamName']+' '+list_gnz[i]['liveName']+'</div> </div>';
+						 
+						 var subs =list_gnz[i]['ranklist'];
+				str+='<ul class="pm_list">';
+				for(var j in subs){
+					str+='<li>'+
+						 '<div class="num num1">'+subs[j].rankId+'</div>'+
+						  '<div class="pho"><img src="'+subs[j].avatar+'"></div>'+
+						  '<div class="pm_name">'+
+							  subs[j].sname+
+							  '<div class="t_'+subs[j]['s_tag']+'_color">'+list_gnz[i]['teamName']+'</div>'+
+						  '</div>'+
+						  '<div class="poll">'+
+							   subs[j].ticketNum+' <span class="dw">票</span>'+
+						  '</div>'+
+						  '<div class="pm_line"></div>'+
+					  '</li>';
+				}
+				str+='</ul><a href="" target="_blank" class="gz">查看《公演MVP评选规则》</a></div></li>';
+
+			}
+			Jmvp.append(str);*/
+		}			
+		
+	 }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+         //alert(errorThrown);
+    }
+
+}).done(function(data){
+    //console.log(data);
+});
+}
+
