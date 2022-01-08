@@ -1,0 +1,242 @@
+/* ------------------------------------- */
+/* *. 2 - General Styles ............... */
+/* ------------------------------------- */
+h4, h5, h6,
+h1, h2, h3 {margin: 0;}
+ul, ol, li{margin: 0; padding: 0; list-style-type: none;}
+p {margin: 0;padding: 0;}
+a,a:visited,a:active {outline: none;text-decoration: none;}
+body{
+	margin:0;
+	padding:0;
+	color: #000;
+}
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  font-family: "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Arial", "Verdana", "Microsoft Yahei", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 62.5%;
+  line-height: 1.6;
+  letter-spacing: 0;
+  height: 100%; }
+
+/*--------------------------------------------------------------
+Header
+--------------------------------------------------------------*/
+.icon_logo{ display: inline-block; width:11%; }
+.icon_logo img{width:100%; min-width: 80px;}
+nav{font-size:1.6rem; max-width: 1280px; margin: 0 auto;padding: 1% 16px;}
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+}
+.bg-dark {
+    background-color: #fff !important;
+}
+.nav-btn-menu{height:37px;width:38px; display: none;}
+.nav-btn-menu .menu-line li{width:98%; border-bottom: 1px solid #000; margin-top: 25%;}
+.nav-btn-menu .menu-line{transition: 100ms all;}
+.nav-btn-menu.active .menu-line{transform:rotate(90deg) translateX(25%); width:30px; transform-origin: 50% 50%;}
+
+.navbar-collapse{text-align: right; display: inline-block; vertical-align: middle;width:89%;margin-left: -1%;}
+.nav-item{display: inline-block; margin: 0 0 0 3%;}
+.nav-item a{color: #000000; font-weight: bold; transition: 200ms all;background: url(../images/sel_bg.jpg) center 200% no-repeat; overflow: hidden;}
+.nav-item.active a,
+.nav-item a:hover{ background: url(../images/sel_bg.jpg) center 72% no-repeat; background-size: 100% 25%; text-decoration: none;}
+.nav-item a:visited,.nav-item a:active{text-decoration: none;}
+
+
+.top_banner{max-width: 1920px; position:relative; background: url(../images/banner.jpg) center top no-repeat; background-size:cover; margin-top:99px;}
+.top_banner img{width:100%; opacity: 0;}
+.con_body{ background-size:100% auto;}
+
+.planInfo{font-size: 1.6rem; height: 100%;background-image: -webkit-linear-gradient(top, #fafafa, #ffffff); }
+.planInfo .container{padding-left: 16px;padding-right: 16px;}
+.planInfo .container,.planInfo .row{height:100%; width: 1280px; }
+.planInfo .cInfo{position: absolute; top: 50%;left: 50%;transform:translate(-50%,-50%); text-align: center;}
+.planInfo .row{position: relative; height: 100%;}
+
+.sbt{font-size: 4rem; font-weight: bold; letter-spacing: 12px; margin: 0 auto; display: inline-block;background: url(../images/test_bt_bg.jpg) 5% 75% no-repeat; background-size: 96% 10%;}
+.sbt2{color: rgba(0,0,0,.87);font-size: 2.4rem; letter-spacing: 5px; margin-top: 3%;}
+.sbt2 span{padding: 0 4%;}
+.sbt_fg{border-bottom: 1px solid #bababa; width:96px; margin: 3% auto 0;}
+.planInfo .remark{color: rgba(0,0,0,.64); max-width:785px; margin: 3% auto 0; line-height: 1.8;  }
+.planInfo .img_info{ margin: 3% auto 0; text-align: right; position: relative;}
+.planInfo .img_info .pd1{background: url(../images/pd1.png) left bottom no-repeat;width:480px; padding:2.6% 30px 7%; text-align: left;position: absolute;top: 0px;}
+.planInfo .img_info .pd1 .pdbt{font-size: 2.4rem; color: rgba(0,0,0,.87); letter-spacing: 3px; }
+.planInfo .img_info .pd1 .pdtxt{color: rgba(0,0,0,.64); margin-top: 4%; line-height: 1.8; }
+.planInfo .team_info{ margin: 3% 0 0 -16px; position: relative;width:1280px;}
+.planInfo .team_info .team_bg{background-size: cover;  width:394px; height:394px; text-align: left; line-height: 1.8; padding: 240px 20px 0; margin: 16px 14px 30px; display: inline-block; vertical-align: top; position: relative;}
+.planInfo .team_info .team_bg.snh{background-image:url(../images/g1_bg.jpg); }
+.planInfo .team_info .team_bg.bej{background-image: url(../images/g2_bg.jpg); }
+.planInfo .team_info .team_bg.gnz{background-image: url(../images/g3_bg.jpg); }
+.planInfo .team_info .team_bg.shy{background-image: url(../images/g4_bg.jpg); }
+.planInfo .team_info .team_bg.ckg{background-image: url(../images/g5_bg.jpg); }
+
+.planInfo .team_info .team_link{background-size: cover;  width:55px; height:55px; position: absolute; bottom: -8px; left: 50%; margin-left: -28px; border-radius: 50%;}
+.planInfo .team_info .team_link.snh{background: url(../images/g1_link.png) -1px -1px; box-shadow: -6px 5px 8px rgba(143,211,245,.5)}
+.planInfo .team_info .team_link.bej{background: url(../images/g2_link.png) -1px -1px; box-shadow: -6px 5px 8px rgba(255,36,113,.5)}
+.planInfo .team_info .team_link.gnz{background: url(../images/g3_link.png) -1px -1px; box-shadow: -6px 5px 8px rgba(170,202,19,.5)}
+.planInfo .team_info .team_link.shy{background: url(../images/g4_link.png) -1px -1px; box-shadow: -6px 5px 8px rgba(226,0,205,.5)}
+.planInfo .team_info .team_link.ckg{background: url(../images/g5_link.png) -1px -1px; box-shadow: -6px 5px 8px rgba(164,98,0,.5)}
+
+.planInfo .img_info_iter{ text-align: left;}
+.planInfo .img_info_iter .pd1{right: 0px;background: url(../images/pd3.png) left bottom no-repeat;width:640px; padding:2.6% 30px 2% 30px;}
+.planInfo .img_info .pd1 .pdbtn{background:#fa94aa; box-shadow: -4px 0 10px rgba(250,148,170,.5); color: #fff; font-size: 1.8rem; margin-top: 1%; line-height: 2; display: inline-block; padding: 0 6%; border-radius: 10px; }
+
+.planInfo .video_info{ margin: 16px 0 0 -16px; position: relative;width:1280px;}
+.planInfo .video_info .vitem{margin: 16px 14px 0;display: inline-block; vertical-align: top; width:288px;}
+.planInfo .video_info .vitem img{width:100%;}
+
+.planInfo .kd_info{margin: 3% auto 4%; position: relative; background: url(../images/kd_bg.jpg) center top no-repeat; background-size:cover;width:100%; height: 640px; overflow: hidden;}
+.planInfo .kd_info .code{background: url(../images/kd_code.png) center top no-repeat; background-size: cover; width:299px; height:391px; position: absolute; left:10%; bottom: -10px;}
+.planInfo .kd_info .txt{margin: 4% auto 0; padding: 0 16px; color: #fff; line-height: 1.8;}
+.planInfo .kd_info .txt span{display: block;}
+.planInfo .kd_info .icon{background: url(../images/kd_logo.png) no-repeat; width: 141px; height: 141px; margin: 5% auto 0;}
+.planInfo .kd_info .remark{margin: 2% auto 0;color: #fff; font-size: 2.4rem;}
+.planInfo .kd_info .kd_link{background: url(../images/kd_link.png) no-repeat; width: 270px; height: 56px; display: block; margin: 3% auto 0;}
+
+.planInfo .ot_info{margin: 3% auto 4%; position: relative;width:100%; overflow: hidden;}
+.planInfo .ot_info .txt_con{width:480px; height: 352px; text-align: left; display: inline-block;vertical-align: middle; background: #f7f7fb; padding:40px 32px 0; margin: 40px 0px 0; }
+.planInfo .ot_info .f_left{float: left;}
+.planInfo .ot_info .f_right{float: right;}
+
+.planInfo .ot_info .txt_con .otbt{font-size: 2.4rem; color: rgba(0,0,0,.87); letter-spacing: 3px;}
+.planInfo .ot_info .txt_con .ottxt{color: rgba(0,0,0,.64); margin-top: 4%; line-height: 1.8; }
+.planInfo .ot_info .txt_con .otimg{display: inline-block; vertical-align: middle;}
+.planInfo .ot_info .txt_con .ottxt .ot_btn{background:#fa94aa; box-shadow: -4px 0 10px rgba(250,148,170,.5); color: #fff; font-size: 1.8rem; margin-top: 1%; line-height: 2; display: inline-block; padding: 0 6%; border-radius: 10px; float: right;}
+
+
+.planInfo.bottom{background: #f7f7fd; height: auto;}
+
+.planInfo.bottom .cInfo_b{max-width:1280px; margin: 0 auto; font-size: 1.6rem;}
+
+.planInfo.bottom .cInfo_b .hz_bt{font-size: 2.4rem; font-weight: bold; margin: 4% 0 0 16px; letter-spacing: 4px;}
+.planInfo.bottom .cInfo_b .hz_bt .remark{font-size: 1.4rem;color: rgba(0,0,0,.64);}
+.planInfo.bottom .cInfo_b .gg_img{margin: 32px 16px 0; float: left;}
+
+.planInfo.bottom .cInfo_b .about_info{margin: 3% auto 4%;}
+.planInfo.bottom .cInfo_b .about_info .ab_sbt{font-weight: bold; margin: 0 0 2%;}
+.planInfo.bottom .cInfo_b .about_info .ab_list a{ font-size: 1.4rem; color: rgba(0,0,0,.64);}
+
+.planInfo .pd{padding: 0 5px;}
+
+.def_Alert{background: #fdfdfd;max-height: 600px; width: 800px; padding: 10px 0; overflow-y: auto; display: none;position: relative;}
+.def_Alert .m_con{ margin:0 10px 0; padding:1.5% 5%; font-size: 1.6rem; text-align: center;}
+.def_Alert .m_con .container{width:100%;}
+
+.def_Alert .m_con .bt{font-size: 4rem; padding-bottom: 1.5%; font-weight: bold; border-bottom: 2px solid #dadada; color: #000;letter-spacing: .8rem;}
+.def_Alert .m_con .bt span{background: url(../images/test_bt_bg.jpg) 5% 85% no-repeat; background-size: 98% 20%;}
+.def_Alert .m_con .lx_list{ border-bottom: 1px dashed #dcdcdc; text-align: left; font-size: 1.4rem; }
+.def_Alert .m_con .lx_list:last-child{border-bottom:none;}
+.def_Alert .m_con .lx_list li{padding: 3% 0; width: 195px; margin:0 57px 0 0 }
+.def_Alert .m_con .lx_list li:last-child{margin:0 0 0 0}
+.def_Alert .m_con .lx_list li .lxbt{font-weight: bold; padding-bottom: 1%; letter-spacing: 2px;}
+.def_Alert .m_con .lxtb{color: rgba(0,0,0,.64);}
+.def_Alert .m_con .code{padding: 4% 0;}
+.def_Alert .m_con .code img{max-width: 280px; width: 100%;}
+.def_Alert .m_con .code_bz{color:#fa94aa; padding-bottom: 3%; letter-spacing: 2px; }
+.def_Alert .close{width:6rem; height: 6rem; position:absolute;left: 5px; top:5px; }
+.def_Alert .close .c_fixed{width:6rem; height: 6rem; color: #b7b7b7;position: fixed;opacity: .6; border-radius: 50%; font-size: 4.6rem; line-height: 5.6rem; text-align: center; cursor: pointer;}
+.def_Alert .close .c_fixed:hover{ color: #b7b7c7; transform: scale(1.1); transition: 200ms all;}
+/*layerå¼¹å‡ºæ ·å¼åŽ»æŽ‰èƒŒæ™¯è‰²*/
+body .lay_nobg{background-color:transparent; border: none; -webkit-overflow-scrolling:touch; box-shadow:none;}
+body .max_w{max-width:800px;}
+
+
+.footer{ line-height: 4.8rem; color: rgba(255,255,255,.60);  background: #22202f; text-align: center; font-size: 1.4rem;}
+.footer .con{max-width: 1280px; padding: 0 16px; margin: 0 auto; text-align: left;}
+.footer .con .go_top{float:right; color: #fff;}
+
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12{
+	padding-left: 16px;
+	padding-right: 16px; 
+}
+
+
+@media only screen and (max-width: 1280px) {
+	.top_banner{ margin-top: 6.7%;}
+}
+
+@media only screen and (max-width: 1200px) {
+	.top_banner,.planInfo{ width: 1170px;}
+	.planInfo .container,.planInfo .row{ width: 1170px;}
+	.planInfo .team_info{width: 1170px;}
+	.planInfo .video_info{width: 1170px;}
+	.planInfo .video_info .vitem{width:260px;}
+	.planInfo .ot_info .f_right{float: none;}
+	.planInfo .ot_info .f_left{float: none;}
+	.planInfo .ot_info .txt_con{width:768px; height: auto; padding-bottom: 3%; margin-top: 0;}
+	.planInfo.bottom{width: 1170px;}
+	.planInfo.bottom .cInfo_b .gg_img{width: 200px;}
+	.footer{width:1170px;}
+}
+
+@media only screen and (max-width: 1000px) {
+	.top_banner,.planInfo{ width: auto;}
+	.planInfo .container,.planInfo .row{ width: auto;}
+	.planInfo .team_info{width: auto;margin: 3% 0 0 0;}
+	.planInfo .video_info{width: auto;margin: 16px 0 0 0;}
+	.planInfo .video_info .vitem{width:288px;}
+	.planInfo .ot_info .f_right{float: none;}
+	.planInfo .ot_info .f_left{float: none;}
+	.planInfo .ot_info .txt_con{width:768px; height: auto; padding-bottom: 3%; margin-top: 0;}
+	.planInfo.bottom{width: auto;}
+	.planInfo.bottom .cInfo_b .gg_img{width: 180px;}
+	.footer{width:auto;}
+	
+	.planInfo .img_info{text-align: center;}
+	.planInfo .img_info .pd1{position:inherit;width:100%; background: url();}
+	.planInfo .img_info_iter .pd1{width:100%;}
+	
+	.planInfo .kd_info .code{ width:260px; height:350px; position: absolute; left:5%; bottom: -10px;}
+}
+
+
+
+@media only screen and (max-width: 768px) {
+	html {
+	  font-size: 62.5%;
+	}
+	.sbt{font-size: 3rem;}
+	.sbt2{font-size:2rem; }
+	.planInfo .img_info .pd1 .pdbt{font-size: 2rem;}
+	.planInfo .ot_info .txt_con .otbt{font-size: 2rem;}
+	.top_banner{background-size: 170%; overflow: hidden;}
+	.top_banner img{width: 170%;}
+	
+	.nav-btn-menu{display: block; float:right;}
+	.navbar-collapse{display: none;text-align: center;width:95%; margin: 0 auto;}
+
+	.nav-item{display:block; margin: 3% 0 0 0;}
+	
+	.def_Alert{width:98%;}
+	
+	.planInfo .kd_info .code{width:200px; height:250px; bottom: -50px; left: 50%; margin-left: -100px;}
+	.planInfo .ot_info .txt_con{width:100%; height: auto;}
+	
+	.planInfo.bottom .cInfo_b .gg_img{width: 120px; margin: 10px;}
+	
+	.planInfo .kd_info .txt span{display:inline;}
+}
+
+@media only screen and (max-width: 468px) {
+	.planInfo .team_info .team_bg{background-size:cover;  width:330px; height:330px;padding: 58% 16px 0; font-size: 1.4rem;}
+	.planInfo .img_info .pd1{padding:2.6% 0px 7%;}
+	.planInfo .ot_info .txt_con{padding:20px 16px; }
+	.footer{ line-height: 2.4rem;}
+	.footer .con{text-align: center; padding: 16px;}
+	.footer .con .go_top{float: inherit; display: inline-block;}
+}
+
+
