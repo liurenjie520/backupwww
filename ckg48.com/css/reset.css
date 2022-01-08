@@ -1,0 +1,67 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font,ins, kbd, q, s,
+samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+fieldset,img,input,button {
+    outline-style: none;
+}
+/* 将斜体扶正 */
+address, cite, dfn, em, var {
+    font-style: normal;
+}
+/* 小于12px的中文很难阅读，让small正常化 */
+small {
+    font-size: 12px;
+}
+/* 重置列表元素 */
+ul, ol {
+    list-style: none;
+}
+/* 重置文本格式元素 */
+a {
+    text-decoration: none;
+}
+/* 使得表单元素在 ie 下能继承字体大小 */
+button, input, select, textarea {
+    font-size: 100%;
+}
+button {
+    margin: 0;
+    padding: 0;
+    border:none;
+}
+/* 重置表格元素 */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/*防止拖动*/
+textarea {
+    resize: none;
+}
+/*去掉图片底侧的3像素空白缝隙*/
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+s,i,em {
+    font-style: normal;
+    text-decoration: none;
+}
+/*清除浮动*/
+.clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%;}
+.clearfix {display: block;}

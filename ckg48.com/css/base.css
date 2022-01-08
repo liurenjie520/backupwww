@@ -1,0 +1,228 @@
+body {
+    font-size: 14px;
+    /*color: #a26200;*/
+    color: #666;
+    font-family: "Microsoft YaHei",Arial;
+    background-color: #fdfcf5;
+    /*background-color: #ddd;*/
+}
+.c{
+    background-color: #e0aa5a;
+}
+.k{
+    background-color: #ff5043;
+}
+/*背景颜色*/
+.c_bg_color {
+    background-color: #a46200;
+}
+.k_bg_color {
+    background-color: #ff5043;
+}
+.prep_bg_color {
+    background-color: #bfbbb6;
+}
+.snh_bg_color{
+    background-color: #8fd2f5;
+}
+.bej_bg_color{
+    background-color: #fe2472;
+}
+.gnz_bg_color{
+    background-color: #abca11;
+}
+.shy_bg_color{
+    background-color: #e200cd;
+}
+.news_zx_color{
+    border:1px solid #ffbb63;
+    color: #ffbb63;
+}
+.news_gg_color{
+    border:1px solid #59d4f0;
+    color: #59d4f0;
+}
+.news_yc_color{
+    border:1px solid #23cfa7;
+    color: #23cfa7;
+}
+.news_wsh_color{
+    border:1px solid #fba1a1;
+    color: #fba1a1;
+}
+.news_cp_color{
+    border:1px solid #cecefd;
+    color: #cecefd;
+}
+
+/*goods and video menu css*/
+.goods-head .goods-menu li.on,
+.ct6 .video-menu li.on{
+    line-height: 40px;
+    border-bottom:3px solid #fff;
+}
+.ct4-c .ct4-goods .active{
+    display: block;
+}
+/*标题字体大小设置*/
+.tit_one{
+    font-size:20px;
+}
+.mid {
+    width: 1280px;
+    margin:0 auto;
+}
+i{
+    display: inline-block;
+    vertical-align: middle;
+}
+a{
+    color: #fff;
+}
+h5{
+    font-size: 18px;
+    font-weight: bold;
+    line-height:40px;
+}
+/*header start*/
+.hd-top{
+    height:8px;
+    margin-bottom:8px;
+}
+.hd-bottom > a{
+    float: left;
+    width: 80px;
+    height:110px;
+}
+.hd-bottom .gif{
+    float: left;
+    width: 710px;
+    height:110px;
+    margin-left: 8px;
+}
+.intro{
+    float: left;
+    width: 304px;
+    height:100%;
+    margin-left: 8px;
+}
+.intro .zg,
+.intro .jy{
+    text-align: center;
+}
+.intro .zg{
+    font-size:22px;
+    color:#a46200;
+    letter-spacing: 8px;
+    font-weight: bold;
+    margin: 2px 0;
+
+}
+.intro .jy{
+    font-size: 16px;
+    background-color: #a46200;
+    color: #fff;
+    letter-spacing: 2px;
+}
+.sister_group{
+    width: 160px;
+    margin-left: 10px;
+    float: left;
+    text-align: center;
+    margin-top: -8px;
+
+}
+.sister_group .option{
+    font-weight: bold;
+    height:20px;
+}
+.sister_group .option a{
+    color: #fff;
+    padding:0 7px;
+}
+.sister_group .other_group{
+    height:33px;
+    line-height: 33px;
+    text-align: center;
+}
+.sister_group .other_group > a{
+    font-size: 20px;
+    color: #fff;
+}
+/*header end*/
+
+/*nav menu*/
+.nav {
+    height: 65px;
+    background-color: #ffe8c0;
+    box-shadow: 0 1px 4px 0 #999;
+    margin-top: 6px;
+	text-align: center;
+}
+.nav ul{width: 82%; display: inline-block;}
+.nav li {
+    float: left;
+    border-right: 1px solid #a46200;
+    max-height: 30px;
+    width: 11.84%;
+    margin-top: 17px;
+}
+.nav li:last-child {
+    border: none;
+}
+.nav li a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    color: #a46200;
+    font-weight: 700;
+    max-height: 65px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -16px;
+    padding: 10px 0;
+    font-size:16px;
+}
+.nav li a:hover {
+    background-color: rgba(229,180,94,0.8);
+    color: #fff;
+    max-width:125px ;
+    font-weight: 600;
+}
+.nav li span {
+    font-size:12px;
+    font-weight:500;
+
+}
+/*导航菜单特效*/
+.hvr-grow-shadow {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow, transform;
+    transition-property: box-shadow, transform;
+}
+[class^="hvr-"] {
+    margin: .4em;
+    padding: 1em;
+    cursor: pointer;
+    background: #e1e1e1;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.hvr-grow-shadow:hover, .hvr-grow-shadow:focus, .hvr-grow-shadow:active {
+    box-shadow: 0 10px 10px -10px rgba(229,180,94,0.5);
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    text-decoration: none;
+    color: #fff;
+    max-height:65px;
+}
+/*nav end*/
