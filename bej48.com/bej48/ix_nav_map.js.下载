@@ -1,0 +1,483 @@
+//!window.jQuery && document.write("<script src=\"js/jquery.min.js\">"+"</scr"+"ipt>");
+//!window.Swiper && document.write("<script src=\"js/swiper.min.js\">"+"</scr"+"ipt>");
+//!window.CGroup && document.write("<script src=\"js/json_data.js\">"+"</scr"+"ipt>");
+// JavaScript Document
+$('body').prepend('<iframe src="https://www.snh48.com/images/siba-topbar/siba-topbar.html" width="100%" height="44px" frameborder="0" style="filter: drop-shadow(0 4px 4px rgba(255, 60, 172, .37));"></iframe>')
+if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+	
+	
+	var u = (window.location.hash);
+	var ul =u.replace("#","");
+	if(ul=="SNH"){
+		 var gid=1;
+	}else if(ul=="BEJ"){
+		 var gid=2;
+	}else if(ul=="GNZ"){
+		 var gid=3;
+	}else{
+		 var gid=1;
+	}
+	window.location.href = "mobile/index.html?gid="+gid;
+}
+if (!!window.ActiveXObject || "ActiveXObject" in window){
+	$(".bgg_ac").removeClass("bgg_ac");
+}
+
+	
+if(typeof CGroup == "undefined"){
+	var CGroup = {
+		SNH: 0,
+		BEJ: 1,
+		GNZ: 2,
+		GROUP:3
+	}
+}
+var isLoadFinish=false;
+function loadData(datag){
+	var u = (window.location.hash);
+	var ul =u.replace("#","");
+	if(null!=datag)
+		ul=datag;
+	if(ul!=""){
+		var datajs="";
+		if(ul=="GROUP"){
+			if(typeof award_data_group == "undefined"){
+				datajs="js/json_data_group.js";
+				//$.get("js/json_data_group.js",function(data){isLoadFinish=true;},"script");
+			}
+		}
+		else if(ul=="SNH"){
+			if(typeof award_data_snh == "undefined"){
+				datajs="js/json_data_snh.js";
+				//$.get("js/json_data_snh.js",function(data){isLoadFinish=true;},"script");
+			}
+		}
+		else if(ul=="BEJ"){
+			if(typeof award_data_bej == "undefined"){
+				datajs="js/json_data_bej.js";
+				//$.get("js/json_data_bej.js",function(data){isLoadFinish=true;},"script");
+			}
+		}
+		else if(ul=="GNZ"){
+			if(typeof award_data_gnz == "undefined"){
+				datajs="js/json_data_gnz.js";
+				//$.get("js/json_data_gnz.js",function(data){isLoadFinish=true;},"script");
+			}
+		}
+		if(datajs!=""){
+			$.ajax({
+			  url: datajs,
+			  dataType: "script",
+			  async: true, 
+			  success: function(data){
+				isLoadFinish=true;
+				//$("body").append("<script>"+ data +"</scr"+"ipt>");
+			  }
+			});
+		}else{
+			isLoadFinish=true;
+		}
+	}
+}
+
+function flashChecker() {
+	var hasFlash = 0; //是否安装了flash
+	var flashVersion = 0; //flash版本
+	if (document.all) {
+	  var swf = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+	  if (swf) {
+		hasFlash = 1;
+		VSwf = swf.GetVariable("$version");
+		flashVersion = parseInt(VSwf.split(" ")[1].split(",")[0]);
+	  }
+	} else {
+	  if (navigator.plugins && navigator.plugins.length > 0) {
+		var swf = navigator.plugins["Shockwave Flash"];
+		if (swf) {
+		  hasFlash = 1;
+		  var words = swf.description.split(" ");
+		  for (var i = 0; i < words.length; ++i) {
+			if (isNaN(parseInt(words[i]))) continue;
+			flashVersion = parseInt(words[i]);
+		  }
+		}
+	  }
+	}
+	return { f: hasFlash, v: flashVersion };
+}
+var left_members = new Array();
+//排名相关代码修改，废弃top_mem_id
+var top_pos = new Array();
+var team_tag;
+function nav_op(){
+	$.ajax({
+		type: 'get',
+		async: true,
+		url: 'https://h5.48.cn/resource/jsonp/allmembers_simple.php?gid=00',
+		dataType: 'jsonp',
+		jsonp: 'callback',//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+		jsonpCallback:"get_members_success",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
+		success: function(data){
+			for(var i=1;i<=48;i++){
+				top_pos[i] = new Array();
+			}
+		
+			for(var j=0 ; j < data.rows.length ;j++){
+				
+				if( !isNaN(parseInt(data.rows[j].ranking)) && parseInt(data.rows[j].ranking)!=0){
+					
+					top_pos[parseInt(data.rows[j].ranking)].push(data.rows[j].sid);
+				}
+			}
+			left_members = data.rows;
+			var ctl = ix_control(CGroup[$("#drop_g .item.curr").find(".g_name").attr("data-g")]);
+			//ctl.chg_lmem(0);
+		}
+	});
+	
+	var fls = flashChecker();
+	/*if (!fls.f){
+		$(".s_cen embed").hide();
+		$(".s_banner").show();
+	}*/
+	if (true){
+		$(".s_cen embed").hide();
+		$(".s_banner").show();
+	}
+
+	team_tag = new Swiper ('#team_tag', {
+		slidesPerView: "1",
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		}
+	});
+}
+
+function getGname(cgroup,award_data){
+	if(cgroup==0){
+		return "award_data_"+"snh";	
+	}else if(cgroup==1){
+		return "award_data_"+"bej";	
+	}else if(cgroup==2){
+		return "award_data_"+"gnz";	
+	}else if(cgroup==3){
+		return "award_data_"+"group";	
+	}		
+}
+function chg_award(cgroup){
+	
+	var gname = getGname(cgroup,"award_data");
+	
+	var award_data = eval(gname);
+	
+	$("#index_award").empty();
+	switch(cgroup){
+		case CGroup.SNH:
+			for(i=0;i<award_data.SNH.length;i++)
+			 	if(award_data.SNH[i]["url"]!=""){
+					$("#index_award").append("<li><a href='"+award_data.SNH[i]["url"]+"'><span class="+ award_data.SNH[i]["team"] +">[SNH48] </span>"+ award_data.SNH[i]["title"] +"</a></li>");
+			    }else{
+					$("#index_award").append("<li><span class="+ award_data.SNH[i]["team"] +">[SNH48] </span>"+ award_data.SNH[i]["title"] +"</li>");
+					}
+				
+			break;
+		case CGroup.BEJ:
+			for(i=0;i<award_data.BEJ.length;i++)
+			     if(award_data.BEJ[i]["url"]!=""){
+					$("#index_award").append("<li><a href='"+award_data.BEJ[i]["url"]+"'><span class="+ award_data.BEJ[i]["team"] +">[BEJ48] </span>"+ award_data.BEJ[i]["title"] +"</a></li>");
+			    }else{
+				    $("#index_award").append("<li><span class="+ award_data.BEJ[i]["team"] +">[BEJ48] </span>"+ award_data.BEJ[i]["title"] +"</li>");
+					}
+				
+			break;
+		case CGroup.GNZ:
+			for(i=0;i<award_data.GNZ.length;i++)
+			if(award_data.GNZ[i]["url"]!=""){
+				$("#index_award").append("<li><a href='"+award_data.GNZ[i]["url"]+"'><span class="+ award_data.GNZ[i]["team"] +">[GNZ48] </span>"+ award_data.GNZ[i]["title"] +"</a></li>");
+			}else{
+				$("#index_award").append("<li><span class="+ award_data.GNZ[i]["team"] +">[GNZ48] </span>"+ award_data.GNZ[i]["title"] +"</li>");
+				}
+			break;
+		default://group
+			if(award_data.SNH[0]["url"]!=""){
+				$("#index_award").append("<li><a href='"+award_data.SNH[0]["url"]+"'><span class="+ award_data.SNH[0]["team"] +">[SNH48] </span>"+ award_data.SNH[0]["title"] +"</a></li>");
+			}else{
+			$("#index_award").append("<li><span class="+ award_data.SNH[0]["team"] +">[SNH48] </span>"+ award_data.SNH[0]["title"] +"</li>");
+			}
+			if(award_data.BEJ[0]["url"]!=""){
+			
+			$("#index_award").append("<li><a href='"+award_data.BEJ[0]["url"]+"'><span class="+ award_data.BEJ[0]["team"] +">[BEJ48] </span>"+ award_data.BEJ[0]["title"] +"</a></li>");
+			}else{
+				$("#index_award").append("<li><span class="+ award_data.BEJ[0]["team"] +">[BEJ48] </span>"+ award_data.BEJ[0]["title"] +"</li>");
+			}
+			if(award_data.GNZ[0]["url"]!=""){
+			
+			$("#index_award").append("<li><a href='"+award_data.GNZ[0]["url"]+"'><span class="+ award_data.GNZ[0]["team"] +">[GNZ48] </span>"+ award_data.GNZ[0]["title"] +"</a></li>");
+			}else{
+			$("#index_award").append("<li><span class="+ award_data.GNZ[0]["team"] +">[GNZ48] </span>"+ award_data.GNZ[0]["title"] +"</li>");
+			}
+			
+			break;
+		}
+		var awardli_w=0;
+		var award_w=$("#index_award").parent().innerWidth()-23-58;//减掉前面的小icon和后面的更多标签的宽度
+		$("#index_award li").each(function(){
+			awardli_w+=$(this).innerWidth();
+		});
+		var temp_awardli_w=awardli_w;
+		var lastli = $("#index_award li:last-child");
+		/*while(awardli_w>award_w){
+			lastli.html(lastli.html().substr(0,lastli.html().length-2));
+			awardli_w = 0;
+			$("#index_award li").each(function(){
+				awardli_w+=$(this).innerWidth();
+			});
+			if(temp_awardli_w==awardli_w){
+				lastli =lastli.find("span");
+				if(lastli.html()==""){
+					$("#index_award li:last-child").remove();
+					break;
+				}
+			}else{
+				temp_awardli_w=awardli_w;
+			}
+		}*/
+
+
+}
+
+var showMarquee;
+function drop_get(){
+	//所有下拉框滑动效果
+	var toggleStyleSelect=function(Jobj){
+		Jobj.toggleClass('hover');
+	};
+	$(".drop .item:gt(0)").hover(function(){
+		toggleStyleSelect($(this));
+	});
+	
+	//刚开始上线版本只显示SNH,bej,gnz队伍 ,后期其他分团信息录入完毕则去掉下面过滤
+	$(".drop:not(#drop_wb) .item").each(function(){
+		var datag = $(this).find(".g_name[data-g]").attr("data-g");
+		if(datag=="GROUP"){
+			$(this).hide();
+		}
+	});
+
+	//首页所有需要刷新的下拉
+	$(".drop:not(#drop_wb) .item").click(function(){
+		var datag = $(this).find(".g_name[data-g]").attr("data-g");
+		if(datag){
+			$(this).parent().find(".curr").removeClass("curr");
+			$(this).addClass("curr");
+			$(this).parent().find(".def .g_name").text($(this).find(".g_name").text())
+			try{
+				$(this).parent().find(".def .tag").attr("class",$(this).find(".tag").attr("class"))
+			}catch(e){}
+		}
+	});
+
+	//主下拉切换分团
+	$("#drop_g .item:gt(0)").click(function(){
+		var u = (window.location.hash);
+		var ul =u.replace("#","");
+		var g =$(this).find(".g_name").attr("data-g");
+		
+	    $(".top_w .logo").attr("href",window.location.href="#"+g);
+		setcookie("gname",g);
+		if(ul!="" && ul!==gname){
+			window.location.hash = g;
+			//window.location.href="#"+g;
+		}
+		if(ul==""){
+			window.location.hash = g;
+			//window.location.href="#"+g;	
+		}
+	
+		/*
+	    chg_award(CGroup[$(this).find(".g_name").attr("data-g")]);
+		var ctl = ix_control(CGroup[$(this).find(".g_name").attr("data-g")]);
+		console.log(CGroup[$(this).find(".g_name").attr("data-g")]);
+		ctl.chg_skin();		
+		ctl.chg_drop();
+		ctl.chg_events();
+		ctl.chg_GroupNav();
+		ctl.chg_lmem(0);
+		ctl.chg_gg();
+		ctl.chg_gg_news();//新闻广告
+		ctl.chg_fans();
+		ctl.chg_vcate();
+		ctl.chg_goods();
+		ctl.chg_records();
+		ctl.chg_bir();
+		ctl.chg_qq();
+		ctl.chg_gf_info();
+		ctl.chg_plat();//公演直播平台
+		ctl.chg_qr();  //扫一扫关注
+		ctl.chg_drop_video();
+		ctl.chg_flash();
+		ctl.chg_pocket_info(CGroup[$(this).find(".g_name").attr("data-g")]);
+		setTimeout(function(){
+		ctl.chg_beian(); //备案资料
+		},200);
+		*/
+		// ctl.chg_footer_address();
+		
+
+	});
+	
+    var gname = getCookie("gname");
+	var hashg = window.location.hash;
+	
+	if(hashg!=""){
+		/*hashg = hashg.replace("#","");
+		//刚开始上线版本只显示SNH队伍,后期其他分团信息录入完毕则去掉下面过滤
+		hashg = hashg.replace("GROUP","SNH");
+		
+		switch(CGroup[hashg]){
+		case CGroup.SNH:
+			$("#drop_g .item:eq(2)").click();
+			break;
+		case CGroup.BEJ:
+			$("#drop_g .item:eq(3)").click();
+			break;
+		case CGroup.GNZ:
+			$("#drop_g .item:eq(4)").click();
+			break;
+		default://group
+			$("#drop_g .item:eq(1)").click();
+			break;
+		}*/
+		go();
+	}
+	/*else if(null!==gname){
+		switch(CGroup[gname]){
+		case CGroup.SNH:
+			$("#drop_g .item:eq(2)").click();
+			break;
+		case CGroup.BEJ:
+			$("#drop_g .item:eq(3)").click();
+			break;
+		case CGroup.GNZ:
+			$("#drop_g .item:eq(4)").click();
+			break;
+		default://group
+			$("#drop_g .item:eq(1)").click();
+			break;
+		}
+	}*/else{
+		$("#drop_g .item:eq(2)").click();//索引2是snh48官网，现在默认这个
+	}
+	
+
+	function getQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]); return null;
+	}
+	
+	//优化自动切换的栏目，随视窗可视范围启动。
+	try{
+		setTimeout(function(){
+			var arr_auto_p=[swiperBanner,swiperNews,swiperVote,m_his,goods_slide,ix_disc_box,theater_pho,mvpsnhSwiper,mvpbejSwiper,mvpgnzSwiper]
+			var p_id=['#banner','#news_ban','#vote_ban','#m_his','#goods_p','#disc','#theater_pho','#mvp_snh','#mvp_bej','#mvp_gnz']
+			window.onscroll = function() {
+				//检测鼠标滚轮距离顶部位置
+				var top = document.documentElement.scrollTop || document.body.scrollTop;
+				//页面滚动时可以得到滚动的距离可以根据这个数值来决定何时给div绑定动画
+				//要设置到DIV刚显示出来时给div添加动画
+				var sc_h=window.screen.availHeight;
+				for(var i=0;i<arr_auto_p.length;i++){
+					var pid = $(p_id[i]);
+					if(p_id[i]=="#disc"){
+						//console.log("滚动条"+top+"-定位"+pid.offset().top+"-身高"+pid[0].offsetHeight+"前面"+(pid.offset().top-sc_h+pid[0].offsetHeight));
+					}
+					if(top > (pid.offset().top-sc_h+pid[0].offsetHeight) && top< (pid.offset().top+pid[0].offsetHeight) && !arr_auto_p[i].autoplay.running) { 
+						arr_auto_p[i].autoplay.start();//添加自动切换状态
+					}else if( ( (top+sc_h) < pid.offset().top || top > (pid.offset().top+pid[0].offsetHeight)) && arr_auto_p[i].autoplay.running ){
+						arr_auto_p[i].autoplay.stop();//关闭自动切换状态
+					}
+				}
+			}
+			$(window).scroll();
+		},1000)
+
+	}catch(ee){console.log(ee.message);}
+		
+}
+
+function go(){
+	var hashg_t = window.location.hash;
+	if(hashg_t!=""){
+		hashg_t = hashg_t.replace("#","");
+	}
+	//刚开始上线版本只显示SNH队伍,后期其他分团信息录入完毕则去掉下面过滤
+	hashg_t = hashg_t.replace("GROUP","SNH");
+	var ctl = ix_control(CGroup[hashg_t]);
+	ctl.chg_skin();
+	loadData();
+	setTimeout(cc=function(){
+		if(isLoadFinish){
+			try{
+				switch(CGroup[hashg_t]){
+				case CGroup.SNH:
+					$("#drop_g .item:eq(2)").click();
+					break;
+				case CGroup.BEJ:
+					$("#drop_g .item:eq(4)").click();
+					break;
+				case CGroup.GNZ:
+					$("#drop_g .item:eq(3)").click();
+					break;
+				default://group
+					$("#drop_g .item:eq(1)").click();
+					break;
+				}
+
+
+				var ctl = ix_control(CGroup[hashg_t]);
+				//ctl.chg_skin();
+				chg_award(CGroup[hashg_t]);
+				ctl.chg_drop();
+				ctl.chg_events();
+				ctl.chg_votehtml();
+				ctl.chg_GroupNav();
+				//ctl.chg_lmem(0);
+				ctl.chg_gg();
+				ctl.chg_gg_news();//新闻广告
+				ctl.chg_fans();
+				ctl.chg_vcate();
+				ctl.chg_goods();
+				ctl.chg_records();
+				ctl.chg_bir();
+				ctl.chg_qq();
+				ctl.chg_gf_info();
+				ctl.chg_plat();//公演直播平台
+				ctl.chg_qr();  //扫一扫关注
+				ctl.chg_drop_video();
+				ctl.chg_flash();
+				ctl.chg_pocket_info(CGroup[hashg_t]);
+				setTimeout(function(){
+				ctl.chg_beian(); //备案资料
+				},200);
+
+				//console.log("url参数-->",hashg_t)
+			}catch(ee){console.log(ee.message)}
+			
+			isLoadFinish=false;
+		}else{
+			setTimeout(cc,5);
+		}
+	},5);
+};
+
+// 调用hashchange
+    if(window.addEventListener){
+        window.addEventListener("hashchange", go,false);
+    }else if(window.attachEvent){
+        window.attachEvent("hashchange", go);
+    }
+//window.onhashchange=go;
+
+

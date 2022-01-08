@@ -1,0 +1,91 @@
+// 公共函数js
+var site_url="https://api.snh48.com/";
+//生XML对象。
+function createXMLDom() {
+	if (window.ActiveXObject)
+		var xmldoc = new ActiveXObject("Microsoft.XMLDOM");
+	else
+	if (document.implementation && document.implementation.createDocument)
+		var xmldoc = document.implementation.createDocument("", "doc", null);
+	xmldoc.async = false;
+	//为了和FireFox一至，这里不能改为False;
+	xmldoc.preserveWhiteSpace = true;
+	return xmldoc;
+}
+
+//合并json
+$.mergeJsonObject = function (jsonbject1, jsonbject2) {
+	var resultJsonObject = {};
+	for (var attr in jsonbject1) {
+		resultJsonObject[attr] = jsonbject1[attr];
+	}
+	for (var attr in jsonbject2) {
+		resultJsonObject[attr] = jsonbject2[attr];
+	}
+	return resultJsonObject;parseXml
+};
+
+function parseXml(fileName) {
+	try { //Internet Explorer  
+		xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+		xmlDoc.async = false;
+		//加载 XML文档,获取XML文档对象
+		xmlDoc.load(fileName);
+	} catch (e) { //Firefox, Mozilla, Opera, etc.  
+		try {
+			xmlDoc = document.implementation.createDocument("", "doc", null);
+			xmlDoc.async = false;
+			//为了和FireFox一至，这里不能改为False;
+			xmlDoc.preserveWhiteSpace = true;
+			//加载 XML文档,获取XML文档对象
+			xmlDoc.load(fileName);
+		} catch (e) {
+			try { //Google Chrome  
+				var xmlhttp = new window.XMLHttpRequest();
+				xmlhttp.open("get", fileName, false);
+				xmlhttp.send(null);
+				xmlDoc = xmlhttp.responseXML.documentElement;
+			} catch (e) {
+				alert("您的浏览器不能正常加载文件。请切换到兼容模式，或者更换浏览器");
+			}
+		}
+	}
+	return xmlDoc;
+}
+
+function setcookie(name,value ){
+	var Days = 30; 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();  
+}
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
+} 
+
+//删除cookies 
+function delCookie(name) 
+{ 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() - 1); 
+    var cval=getCookie(name); 
+    if(cval!=null) 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+} 
+
+//获取url参数
+function getQueryString(name) {
+	var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null) {
+	return unescape(r[2]);
+	}
+	return null;
+}
